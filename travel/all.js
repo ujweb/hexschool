@@ -1,3 +1,5 @@
+"use strict";
+
 let data = [
 	{
 		id: 0,
@@ -33,49 +35,74 @@ let data = [
 
 const addTicketForm = document.querySelector('.addTicket-form');
 const addTicketBtn = document.querySelector('.addTicket-btn');
+const regionSearch = document.querySelector(".regionSearch");
 
-const ticketName		= addTicketForm.querySelector('#ticketName').value;
-const ticketImgUrl		= addTicketForm.querySelector('#ticketImgUrl').value;
-const ticketRegion		= addTicketForm.querySelector('#ticketRegion').value;
-const ticketPrice		= Number(addTicketForm.querySelector('#ticketPrice').value);
-const ticketNum			= Number(addTicketForm.querySelector('#ticketNum').value);
-const ticketRate		= Number(addTicketForm.querySelector('#ticketRate').value);
-const ticketDescription	= addTicketForm.querySelector('#ticketDescription').value;
+function addTicket() {
+	// let ticketName			= document.querySelector('#ticketName').value;
+	// let ticketImgUrl		= document.querySelector('#ticketImgUrl').value;
+	// let ticketRegion		= document.querySelector('#ticketRegion').value;
+	// let ticketPrice			= Number(document.querySelector('#ticketPrice').value);
+	// let ticketNum			= Number(document.querySelector('#ticketNum').value);
+	// let ticketRate			= Number(document.querySelector('#ticketRate').value);
+	// let ticketDescription	= document.querySelector('#ticketDescription').value;
 
-function checkInput() {
-	// 顯示必填欄位錯誤
-	let formGroups = document.querySelectorAll('.form-group');
-	let errorCount = 0;
-	formGroups.forEach(element => {
-		if ( element.firstElementChild.lastElementChild.value == '' ) {
-			element.lastElementChild.style.display = 'flex';
-			errorCount ++;
-		} else {
-			element.lastElementChild.style.display = 'none';
+	// addTicketForm.forEach(element => {
+	// 	console.log(element);
+	// });
+	for (let idx = 0; idx < addTicketForm.length; idx++) {
+		if ( addTicketForm[idx].value === '' ) {
+			console.log('請確認資訊是否輸入完全');
+			return;
 		}
-	});
-	if ( errorCount > 0 ) {
-		alert('請確認輸入資料是否完整');
-		return;
+		if ( addTicketForm[1].value.slice(0, 7) !== "http://" && addTicketForm[1].value.slice(0, 8) !== "https://" ) {
+			console.log('請輸入正確網址');
+			return;
+		} else if ( addTicketForm[5].value < 1 || addTicketForm[5].value > 10 ) {
+			console.log('套票星級為1~10');
+			return;
+		} else if ( addTicketForm[6].value.length > 100 ) {
+			console.log('限 100 字');
+			return;
+		}
 	}
 
 	data.push({
 		id:				data.length,
-		name:			ticketName,
-		imgUrl:			ticketImgUrl,
-		area:			ticketRegion,
-		description:	ticketDescription,
-		group:			Number(ticketNum),
-		price:			Number(ticketPrice),
-		rate:			Number(ticketRate),
+		name:			addTicketForm[1],
+		imgUrl:			addTicketForm[2],
+		area:			addTicketForm[3],
+		description:	addTicketForm[7],
+		group:			Number(addTicketForm[4]),
+		price:			Number(addTicketForm[5]),
+		rate:			Number(addTicketForm[6]),
 	});
-	console.log(data);
+
+	renderData(data);
 }
+
+function renderData(data) {
+	let structure = '';
+	data.forEach(item => {
+		console.log(item);
+	});
+}
+
 addTicketBtn.addEventListener('click', (e) => {
-	checkInput();
+	if (e.target.value !== "新增套票") {
+		return
+	}
+	addTicket();
 });
 
-function getOption() {
-	let value = document.querySelector(".regionSearch").value;
-	console.log(value);
-}
+regionSearch.addEventListener("change", function () {
+	console.log(regionSearch.value);
+	if (regionSearch.value === "全部地區") {
+		renderData(data);
+		return;
+	} else {
+		const newData = data.filter(function (item) {
+			return item["area"] == regionSearch.value;
+		});
+		renderData(newData);
+	}
+});  
