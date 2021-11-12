@@ -35,46 +35,40 @@ let data = [
 
 const addTicketForm = document.querySelector('.addTicket-form');
 const addTicketBtn = document.querySelector('.addTicket-btn');
+const searchResult = document.querySelector("#searchResult-text");
 const regionSearch = document.querySelector(".regionSearch");
+const ticketCardArea = document.querySelector(".ticketCard-area");
 
 function addTicket() {
-	// let ticketName			= document.querySelector('#ticketName').value;
-	// let ticketImgUrl		= document.querySelector('#ticketImgUrl').value;
-	// let ticketRegion		= document.querySelector('#ticketRegion').value;
-	// let ticketPrice			= Number(document.querySelector('#ticketPrice').value);
-	// let ticketNum			= Number(document.querySelector('#ticketNum').value);
-	// let ticketRate			= Number(document.querySelector('#ticketRate').value);
-	// let ticketDescription	= document.querySelector('#ticketDescription').value;
-
-	// addTicketForm.forEach(element => {
-	// 	console.log(element);
-	// });
 	for (let idx = 0; idx < addTicketForm.length; idx++) {
 		if ( addTicketForm[idx].value === '' ) {
-			console.log('請確認資訊是否輸入完全');
+			alert('請確認資訊是否輸入完全');
 			return;
 		}
-		if ( addTicketForm[1].value.slice(0, 7) !== "http://" && addTicketForm[1].value.slice(0, 8) !== "https://" ) {
-			console.log('請輸入正確網址');
+		if ( addTicketForm[1].value.indexOf('http://') && addTicketForm[1].value.indexOf('https://') ) {
+			alert('請輸入正確網址');
+			return;
+		} else if ( !isNaN(addTicketForm[3]) || !isNaN(addTicketForm[4]) || !isNaN(addTicketForm[5]) ) {
+			alert('請輸入數字');
 			return;
 		} else if ( addTicketForm[5].value < 1 || addTicketForm[5].value > 10 ) {
-			console.log('套票星級為1~10');
+			alert('套票星級為1~10');
 			return;
 		} else if ( addTicketForm[6].value.length > 100 ) {
-			console.log('限 100 字');
+			alert('限 100 字');
 			return;
 		}
 	}
 
 	data.push({
 		id:				data.length,
-		name:			addTicketForm[1],
-		imgUrl:			addTicketForm[2],
-		area:			addTicketForm[3],
-		description:	addTicketForm[7],
-		group:			Number(addTicketForm[4]),
-		price:			Number(addTicketForm[5]),
-		rate:			Number(addTicketForm[6]),
+		name:			addTicketForm[0].value,
+		imgUrl:			addTicketForm[1].value,
+		area:			addTicketForm[2].value,
+		description:	addTicketForm[6].value,
+		group:			Number(addTicketForm[4].value),
+		price:			Number(addTicketForm[3].value),
+		rate:			Number(addTicketForm[5].value),
 	});
 
 	renderData(data);
@@ -83,9 +77,39 @@ function addTicket() {
 function renderData(data) {
 	let structure = '';
 	data.forEach(item => {
-		console.log(item);
+		structure += `<li class="ticketCard">
+			<div class="ticketCard-img">
+				<a href="#">
+					<img src="${item.imgUrl}" alt="${item.name}" />
+				</a>
+				<div class="ticketCard-region">${item.area}</div>
+				<div class="ticketCard-rank">${item.rate}</div>
+			</div>
+			<div class="ticketCard-content">
+				<div>
+					<h3>
+						<a href="#" class="ticketCard-name">${item.name}</a>
+					</h3>
+					<p class="ticketCard-description">
+						${item.description}
+					</p>
+				</div>
+				<div class="ticketCard-info">
+					<p class="ticketCard-num">
+						<span><i class="fas fa-exclamation-circle"></i></span>
+						剩下最後 <span id="ticketCard-num"> ${item.group} </span> 組
+					</p>
+					<p class="ticketCard-price">
+						TWD <span id="ticketCard-price">$${item.price}</span>
+					</p>
+				</div>
+			</div>
+		</li>`;
 	});
+	searchResult.innerHTML = `本次搜尋共 ${data.length} 筆資料`;
+	ticketCardArea.innerHTML = structure;
 }
+renderData(data);
 
 addTicketBtn.addEventListener('click', (e) => {
 	if (e.target.value !== "新增套票") {
