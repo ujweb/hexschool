@@ -116,6 +116,7 @@ addTicketBtn.addEventListener('click', (e) => {
 		return
 	}
 	addTicket();
+	location.hash = '#search-result-content';
 });
 
 regionSearch.addEventListener("change", function () {
