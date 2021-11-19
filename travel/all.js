@@ -71,6 +71,8 @@ function addTicket() {
 		rate:			Number(addTicketForm[5].value),
 	});
 
+	addTicketForm.reset();
+	addTicketForm[2].value = '';
 	renderData(data);
 }
 
