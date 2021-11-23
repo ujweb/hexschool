@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>2021 前端工程師薪資資料</title>
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap">
+		<!-- bootstrap -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
+		<!-- c3.js -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.0.0/d3.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js"></script>
+		<link rel="stylesheet" href="main.css">
+	</head>
+	<body>
+		<section class="py-5">
+			<div class="container">
+				<div class="row">
+					<div class="col-xl-4 offset-xl-2 col-lg-5 offset-lg-1 col-md-4 mb-md-0 mb-2 text-md-start text-center">
+						<div class="h5 text-primary">長條圖</div>
+						<div class="h3">接案公司的薪資滿意度</div>
+					</div>
+					<div class="col-xl-4 col-lg-5 col-md-8">
+						<div id="chart-piecework"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="py-5 bg-light">
+			<div class="container">
+				<div class="row">
+					<div class="col-xl-4 offset-xl-2 col-lg-5 offset-lg-1 col-md-4 mb-md-0 mb-2 text-md-start text-center">
+						<div class="h5 text-primary">長條圖</div>
+						<div class="h3">抓取博弈、電商公司兩個產業滿意度的平均分數</div>
+					</div>
+					<div class="col-xl-4 col-lg-5 col-md-8">
+						<div id="chart-game-ecommerce"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="py-5">
+			<div class="container">
+				<div class="row">
+					<div class="col-xl-4 offset-xl-2 col-lg-5 offset-lg-1 col-md-4 mb-md-0 mb-2 text-md-start text-center">
+						<div class="h5 text-primary">圓餅圖</div>
+						<div class="h3">撈取男性跟女性比例有多少</div>
+					</div>
+					<div class="col-xl-4 col-lg-5 col-md-8">
+						<div id="chart-gender"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="py-5 bg-light">
+			<div class="container">
+				<div class="row">
+					<div class="col-xl-4 offset-xl-2 col-lg-5 offset-lg-1 col-md-4 mb-md-0 mb-2 text-md-start text-center">
+						<div class="h5 text-primary">圓餅圖</div>
+						<div class="h3">顯示薪水區間分佈</div>
+					</div>
+					<div class="col-xl-4 col-lg-5 col-md-8">
+						<div id="chart-salary-distribution"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+        <script src="main.js"></script>
+	</body>
+</html>
