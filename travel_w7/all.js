@@ -41,7 +41,18 @@ function addTicket() {
 
 	addTicketForm.reset();
 	addTicketForm[2].value = '';
+
+	regionSearch.value = '地區搜尋';
+
 	renderData(data);
+	filterRegion('地區搜尋', data);
+	chartRegion(data);
+
+	location.hash = '#search-result-content';
+	window.scrollTo({
+		top: document.querySelector('#search-result-content').getBoundingClientRect().top + window.pageYOffset,
+		behavior: 'smooth'
+	})
 }
 
 function renderData(data) {
@@ -78,10 +89,9 @@ function renderData(data) {
 	});
 	searchResult.innerHTML = `本次搜尋共 ${data.length} 筆資料`;
 	ticketCardArea.innerHTML = structure;
-	arrayRegion(data);
 }
 
-function arrayRegion(data) {
+function chartRegion(data) {
 	let region = {};
 	let regionData;
 	data.forEach(el => {
@@ -91,9 +101,6 @@ function arrayRegion(data) {
 
 	const chart = c3.generate({
 		bindto: "#chart",
-		interaction: {
-			enabled: false
-		},
 		data: {
 			columns: regionData,
 			type : 'donut',
@@ -102,9 +109,6 @@ function arrayRegion(data) {
 				'台中': '#5151D3',
 				'高雄': '#E68618'
 			}
-		},
-		tooltip: {
-			show: false
 		},
 		donut: {
 			width: 14,
@@ -135,6 +139,7 @@ axios.get(travelApi)
 .then(response => {
 	data = response.data.data;
 	renderData(data);
+	chartRegion(data);
 })
 .catch((error) => {
 	alert('資料讀取錯誤，請稍後再試');
@@ -146,8 +151,6 @@ addTicketBtn.addEventListener('click', (e) => {
 		return
 	}
 	addTicket();
-	filterRegion(regionSearch.value, data);
-	location.hash = '#search-result-content';
 });
 
 regionSearch.addEventListener("change", function () {
