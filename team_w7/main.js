@@ -13,8 +13,19 @@ function obj2ary(obj) {
 axios.get(frontend_data)
 .then(response => {
 	data = response.data;
+	pieceworkSalaryAry();
+	gameEcommerceScore();
+	genderRatio();
+	salaryDistribution();
+})
+.catch((error) => {
+	alert('資料讀取錯誤，請稍後再試');
+	console.error(error);
+});
 
-	// 1. 長條圖: 接案公司的薪資滿意度
+
+// 1. 長條圖: 接案公司的薪資滿意度
+function pieceworkSalaryAry() {
 	let salaryObj = {};
 	let salaryAry = ['分數'];
 	data.forEach(item => {
@@ -47,8 +58,10 @@ axios.get(frontend_data)
 			},
 		},
 	})
+}
 
-	// 2. 長條圖: 抓取博弈、電商公司兩個產業滿意度的平均分數
+// 2. 長條圖: 抓取博弈、電商公司兩個產業滿意度的平均分數
+function gameEcommerceScore() {
 	let industryData = [];
 	data.forEach((item, idx) => {
 		if (item.company.industry.includes('博奕') || item.company.industry.includes('博弈')) {
@@ -86,8 +99,10 @@ axios.get(frontend_data)
 			},
 		},
 	})
+}
 
-	// 3. 圓餅圖: 撈取男性跟女性比例有多少
+// 3. 圓餅圖: 撈取男性跟女性比例有多少
+function genderRatio() {
 	data.forEach(item => {
 		if ( item.gender === '男性' ) {
 			gender.男性 ++;
@@ -106,8 +121,10 @@ axios.get(frontend_data)
 			},
 		},
 	})
+}
 
-	// 4. 圓餅圖: 顯示薪水區間分佈
+// 4. 圓餅圖: 顯示薪水區間分佈
+function salaryDistribution() {
 	let salaryDistributionObj = {};
 	data.forEach(item => {
 		if ( salaryDistributionObj[item.company.salary] === undefined ) {
@@ -126,8 +143,4 @@ axios.get(frontend_data)
 			pattern: ['#c1beb6', '#aea3cd', '#f3a1bd', '#f5df4e', '#949398', '#8aacd3', '#01559a', '#019db1', '#d25c78', '#f1ede9', '#924684', '#5960a0', '#998354']
 		}
 	})
-})
-.catch((error) => {
-	alert('資料讀取錯誤，請稍後再試');
-	console.error(error);
-});
+}
