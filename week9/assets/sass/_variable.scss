@@ -1,0 +1,67 @@
+//
+$init: 0.0625rem;   //1px
+
+//
+$h1: $init*32;      //32px
+$h2: $init*28;      //28px
+$h3: $init*24;      //24px
+$h4: $init*20;      //20px
+$h5: $init*16;      //16px
+$h6: $init*14;      //14px
+
+
+//
+$white:         #fff !default; //background
+$gray-100:      #F8F8F8 !default;
+$gray-200:      #CED4DA !default;
+$gray-300:      #B9B9B9 !default;
+$gray-350:      #818A91 !default;
+$gray-400:      #797979 !default;
+$gray-500:      #2C2C2C !default;
+$black:         #000 !default;
+
+//
+$purple-dark:     #301E5F;
+$purple-default:  #6A33F8;
+
+//
+$primary: $purple-default !default;
+$primary-variant: $purple-dark !default;
+
+//
+$facebook:      #1877f2 !default;
+$line:          #00c200 !default;
+$instagram:     #dd2a7b !default;
+$weibo:         #e6162d !default;
+$rss:           #ff5700 !default;
+$twitter:       #00acee !default;
+$whatapp:       #4fce5d !default;
+
+//
+$gutter-width: 30px;
+$grid-sum: 12;
+
+$grid-breakpoints: (
+	"": false,
+	xs: 360px,
+	sm: 414px,
+	md: 768px,
+	lg: 1024px,
+	xl: 1440px,
+);
+
+$aligns: left, center, right;
+$weights: 100, 300, 400, 500, 500;
+$displays: block, inline-block, none, flex;
+$spacies: (
+	"0": 0px,
+	"10": 10px,
+	"15": 15px,
+	"20": 20px,
+	"30": 30px,
+	"40": 40px,
+	"50": 50px,
+	"auto": auto,
+);
+$property: "m", "p";
+$sides: "", "t", "b", "l", "r", "x", "y";

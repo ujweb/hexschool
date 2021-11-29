@@ -1,0 +1,71 @@
+@charset"UTF-8";
+@import"Compass";
+@import"breakpoint";
+
+@import 'normalize-version';
+@import 'normalize/html5';
+@import 'normalize/base';
+@import 'normalize/links';
+// @import 'normalize/typography';
+@import 'normalize/embeds';
+@import 'normalize/groups';
+@import 'normalize/forms';
+@import 'normalize/tables';
+
+@mixin list($margin, $padding, $style) {
+    margin: $margin;
+    padding: $padding;
+    list-style: $style;
+}
+
+@mixin beforeafter($content, $display) {
+    content: $content;
+    display: $display;
+}
+
+@mixin clear() {
+    @include beforeafter('', table);
+    clear: both;
+}
+
+@mixin lineclamp($line) {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: $line;
+    -webkit-box-orient: vertical;
+}
+
+@mixin button($defaultColor, $hoverColor) {
+    display: inline-block;
+    // padding-top: 3px;
+    min-width: 140px;
+    color: $defaultColor;
+    font-size: 0.875rem;
+    line-height: 2.5;
+    text-align: center;
+    background-color: transparent;
+    border: 1px solid $defaultColor;
+    cursor: pointer;
+    &:hover, &:active, &.active, &:focus {
+        color: $hoverColor;
+        background-color: $defaultColor;
+    }
+    @include breakpoint(1024px) {
+        min-width: 150px;
+    }
+}
+
+@mixin imghover() {
+    &::before {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        @include beforeafter('', block);
+        background-color: rgba($black, 0.5);
+        background-image: -webkit-radial-gradient(center center, closest-side ellipse, rgba(255, 255, 255, .1) 30%, rgba(0, 0, 0, .4) 130%);
+        @include opacity(0);
+        @include transition(opacity 0.3s);
+    }
+}

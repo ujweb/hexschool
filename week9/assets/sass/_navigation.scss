@@ -1,0 +1,94 @@
+.navbar {
+    border-bottom: $init * 40 solid #000;
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    a {
+        display: block;
+        &.navbar-brand {
+            color: $black;
+            font-size: $h3;
+            font-weight: bold;
+            @media screen and (max-width: 767px) {
+                padding-top: $gutter-width / 2;
+                padding-bottom: $gutter-width / 2;
+            }
+            @media screen and (min-width: 768px) {
+                line-height: $init * 100;
+            }
+            &:hover {
+                font-size: $h2;
+            }
+        }
+    }
+    .navbar-hamburger {
+        @media screen and (max-width: 767px) {
+            display: block;
+        }
+        @media screen and (min-width: 768px) {
+            display: none;
+        }
+        span {
+            display: block;
+            width: 30px;
+            height: 4px;
+            background-color: $black;
+            margin: 6px auto;
+            transition: all 0.3s ease-in-out;
+        }
+        &.active span {
+            height: 3px;
+            margin: 7px auto;
+            &:nth-child(2) {
+                opacity: 0;
+            }
+            &:nth-child(1) {
+                transform: translateY(10px) rotate(45deg);
+            }
+            &:nth-child(3) {
+                transform: translateY(-10px) rotate(-45deg);
+            }
+        }
+    }
+    .navbar-nav {
+        @include list(0, 0, none);
+        @media screen and (max-width: 767px) {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: $white;
+            z-index: 1;
+        }
+        @media screen and (min-width: 768px) {
+            display: flex !important;
+            align-items: center;
+        }
+        li {
+            + li {
+                @media screen and (min-width: 768px) {
+                    margin-left: $h3*2;
+                }
+            }
+            a {
+                color: $black;
+                font-size: $h4;
+                @media screen and (max-width: 767px) {
+                    padding: $gutter-width / 2;
+                }
+                &:hover {
+                    @media screen and (max-width: 767px) {
+                        color: $white;
+                        background-color: $primary;
+                    }
+                    @media screen and (min-width: 768px) {
+                        color: $primary;
+                    }
+                }
+            }
+        }
+    }
+}
