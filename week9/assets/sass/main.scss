@@ -211,3 +211,51 @@
         }
     }
 }
+
+.form-group {
+    .form-item {
+        position: relative;
+        + .form-item {
+            margin-top: 40px;
+        }
+        p {
+            display: none;
+            @media screen and (min-width: 768px) {
+                position: absolute;
+                bottom: 0;
+                left: 100%;
+                white-space: nowrap;
+                transform: translateY(-30%);
+            }
+        }
+    }
+    label {
+        padding-bottom: 0.375em;
+        font-size: 1rem;
+    }
+    input {
+        font-size: 1rem;
+    }
+    input[type='text'],
+    input[type='tel'],
+    input[type='email'],
+    select {
+        width: 100%;
+        padding: 0.5em 0.75em;
+        border: 1px solid $gray-200;
+        border-radius: 4px;
+    }
+    button {
+        display: block;
+        width: 75%;
+        padding: 0.5em;
+        color: $white;
+        font-size: $h4;
+        background-color: $black;
+        border: 0;
+        border-radius: 4px;
+        &:hover {
+            background-color: $primary-variant;
+        }
+    }
+}

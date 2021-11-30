@@ -2,6 +2,7 @@ $colors: () !default;
 $colors: map-merge((
 	"primary": ($primary),
 	"primary-variant": ($primary-variant),
+	"red": ($red-default),
 	"white": ($white),
 	"gray-100": ($gray-100),
 	"gray-200": ($gray-200),

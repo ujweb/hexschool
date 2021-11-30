@@ -24,11 +24,13 @@
 .row {
 	display: flex;
 	flex-wrap: wrap;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
 	margin-left: -($gutter-width / 2);
 	margin-right: -($gutter-width / 2);
+	&.justify-center {
+		-webkit-box-pack: center;
+		-ms-flex-pack: center;
+		justify-content: center;
+	}
 }
 
 .no-gutter {

@@ -37,7 +37,6 @@ let slideUp = (target, duration = 500) => {
 		//alert("!");
 	}, duration);
 };
-
 let slideDown = (target, duration = 500) => {
 	target.style.removeProperty("display");
 	let display = window.getComputedStyle(target).display;
@@ -79,5 +78,3 @@ hamburger.onclick = function () {
 	hamburger.classList.toggle("active");
 	slideToggle(document.querySelector(".navbar-nav"), 500);
 };
-	
-	

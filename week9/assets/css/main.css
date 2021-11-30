@@ -277,11 +277,13 @@ textarea {
 .row {
   display: flex;
   flex-wrap: wrap;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+.row.justify-center {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
-  margin-left: -15px;
-  margin-right: -15px;
 }
 
 .no-gutter {
@@ -3887,6 +3889,14 @@ h6, .h6 {
   background-color: #301E5F;
 }
 
+.color-red {
+  color: #C72424;
+}
+
+.bg-red {
+  background-color: #C72424;
+}
+
 .color-white {
   color: #fff;
 }
@@ -4270,6 +4280,54 @@ a.btn {
 }
 .product-group .product-item .price-origin {
   text-decoration: line-through;
+}
+
+.form-group .form-item {
+  position: relative;
+}
+.form-group .form-item + .form-item {
+  margin-top: 40px;
+}
+.form-group .form-item p {
+  display: none;
+}
+@media screen and (min-width: 768px) {
+  .form-group .form-item p {
+    position: absolute;
+    bottom: 0;
+    left: 100%;
+    white-space: nowrap;
+    transform: translateY(-30%);
+  }
+}
+.form-group label {
+  padding-bottom: 0.375em;
+  font-size: 1rem;
+}
+.form-group input {
+  font-size: 1rem;
+}
+.form-group input[type='text'],
+.form-group input[type='tel'],
+.form-group input[type='email'],
+.form-group select {
+  width: 100%;
+  padding: 0.5em 0.75em;
+  border: 1px solid #CED4DA;
+  border-radius: 4px;
+}
+.form-group button {
+  display: block;
+  width: 75%;
+  padding: 0.5em;
+  color: #fff;
+  font-size: 1.25rem;
+  background-color: #000;
+  border: 0;
+  border-radius: 4px;
+}
+.form-group button:hover {
+  background-color: #301E5F;
 }
 
 /*# sourceMappingURL=main.css.map */
