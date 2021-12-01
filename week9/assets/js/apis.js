@@ -9,6 +9,7 @@ const selectCategory = document.querySelector(".product-select");
 
 let products = [];
 
+// 千分位
 function thousandComma(number) {
 	let num = number.toString();
 	let pattern = /(-?\d+)(\d{3})/;
