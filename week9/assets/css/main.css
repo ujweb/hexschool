@@ -183,6 +183,10 @@ th {
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   position: relative;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -4073,6 +4077,46 @@ a.btn {
   }
 }
 
+.side-fixed {
+  position: fixed;
+  display: none;
+  bottom: 20px;
+  right: 20px;
+}
+.side-fixed .icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  color: #000;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 1px solid #CED4DA;
+  cursor: pointer;
+}
+.side-fixed .icon:hover {
+  color: #6A33F8;
+  border-color: #6A33F8;
+}
+.side-fixed .icon + .icon {
+  margin-top: 10px;
+}
+.side-fixed .icon span.number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  background-color: #C72424;
+  border-radius: 50%;
+  transform: scale(0.9);
+}
 .jumbotron .img {
   height: 420px;
   background-image: url("../images/photo-1552848469-b4c949fdded7@2x.png");
@@ -4503,7 +4547,7 @@ a.btn {
   position: relative;
 }
 .form-group .form-item + .form-item {
-  margin-top: 40px;
+  margin-top: 20px;
 }
 .form-group .form-item p {
   display: none;
@@ -4530,6 +4574,7 @@ a.btn {
 .form-group select {
   width: 100%;
   padding: 0.5em 0.75em;
+  background-color: #fff;
   border: 1px solid #CED4DA;
   border-radius: 4px;
 }

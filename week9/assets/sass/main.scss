@@ -9,6 +9,49 @@
 @import "_navigation";
 @import "_footer";
 
+.side-fixed {
+    position: fixed;
+    display: none;
+    bottom: 20px;
+    right: 20px;
+    .icon {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: $h3 * 2;
+        height: $h3 * 2;
+        color: $black;
+        background-color: $white;
+        border-radius: 50%;
+        border: 1px solid $gray-200;
+        cursor: pointer;
+        &:hover {
+            color: $primary;
+            border-color: $primary;
+        }
+        + .icon {
+            margin-top: 10px;
+        }
+        span.number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 1rem;
+            height: 1rem;
+            color: $white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            background-color: $red-default;
+            border-radius: 50%;
+            transform: scale(0.9);
+        }
+    }
+}
+
 .jumbotron {
     .img {
         height: 420px;
