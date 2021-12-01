@@ -18,6 +18,18 @@ function thousandComma(number) {
 	return num;
 }
 
+// 表單驗證
+let forms = document.querySelectorAll(".needs-validation");
+Array.prototype.slice.call(forms).forEach((form) => {
+	form.addEventListener("submit", (event) => {
+		if (!form.checkValidity()) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		form.classList.add("was-validated");
+	});
+});
+
 // 取得產品列表
 axios.get(productsList)
 .then((response) => {

@@ -428,10 +428,16 @@
 }
 
 .form-group {
+    &.was-validated :invalid {
+        border: 1px solid $weibo;
+        ~ .invalid-feedback {
+            display: block;
+        }
+    }
     .form-item {
         position: relative;
         + .form-item {
-            margin-top: 40px;
+            margin-top: 20px;
         }
         p {
             display: none;
@@ -457,6 +463,7 @@
     select {
         width: 100%;
         padding: 0.5em 0.75em;
+        background-color: $white;
         border: 1px solid $gray-200;
         border-radius: 4px;
     }

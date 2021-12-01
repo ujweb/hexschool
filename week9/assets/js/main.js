@@ -1,16 +1,5 @@
 "use strict";
 
-var forms = document.querySelectorAll(".needs-validation");
-Array.prototype.slice.call(forms).forEach((form) => {
-	form.addEventListener("submit", (event) => {
-		if (!form.checkValidity()) {
-			event.preventDefault();
-			event.stopPropagation();
-		}
-		form.classList.add("was-validated");
-	});
-});
-
 let hamburger = document.querySelector(".navbar-hamburger");
 let slideUp = (target, duration = 500) => {
 	target.style.transitionProperty = "height, margin, padding";
