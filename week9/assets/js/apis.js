@@ -5,9 +5,14 @@ const customerOrders = `${domain}/customer/iris/orders`;
 const adminOrders = `${domain}/admin/iris/orders`;
 
 const productGroup = document.querySelector('.product-group');
+const cartTable = document.querySelector('.cart-table');
 const selectCategory = document.querySelector(".product-select");
+const total = document.querySelector(".total");
 
 let products = [];
+let carts = [];
+let cartNumTotal = 0;
+let cartTotal = 0;
 
 // 千分位
 function thousandComma(number) {
@@ -32,15 +37,17 @@ Array.prototype.slice.call(forms).forEach((form) => {
 });
 
 // 取得產品列表
-axios.get(productsList)
-.then((response) => {
-	products = response.data.products;
-	renderProducts(products);
-	filterCategory('全部', products);
-})
-.catch((error) => {
-	console.error(error)
-})
+function productListInit() {
+	axios.get(productsList)
+	.then(response => {
+		products = response.data.products;
+		renderProducts(products);
+		filterCategory('全部', products);
+	})
+	.catch((error) => {
+		console.error(error)
+	})
+}
 // 渲染產品列表
 function renderProducts(products) {
 	let str = '';
@@ -74,3 +81,89 @@ function filterCategory(category, products) {
 selectCategory.addEventListener("change", function () {
 	filterCategory(selectCategory.value, products);
 });
+
+// 取得購物車列表
+function cartListInit() {
+	axios.get(customerCarts)
+	.then((response) => {
+		carts = response.data.carts;
+		cartTotal = response.data.finalTotal;
+		renderCarts(carts);
+		total.textContent = thousandComma(cartTotal);
+	})
+	.then(() => {
+		let btnDeleteCartItem = document.querySelectorAll('.btn-delete-cart-item');
+		btnDeleteCartItem.forEach(item => {
+			item.addEventListener("click", function (e) {
+				delectCartItem(e.target.dataset.id);
+			});		  
+		});
+	})
+	.catch((error) => {
+		console.error(error)
+	})
+}
+// 渲染購物車列表
+function renderCarts(carts) {
+	let str = '';
+	carts.forEach(item => {
+		str += `<tr>
+			<td>
+				<div class="img">
+					<img src="${item.product.images}" alt="${item.product.title}">
+				</div>
+			</td>
+			<td>${item.product.title}</td>
+			<td>NT$${thousandComma(item.product.price)}</td>
+			<td>${item.quantity}</td>
+			<td>NT$${thousandComma(item.product.price * item.quantity)}</td>
+			<td>
+				<span class="material-icons btn-delete-cart-item" data-id="${item.id}">close</span>
+			</td>
+		</tr>`;
+		cartNumTotal += item.quantity;
+	});
+	cartTable.innerHTML = str;
+	cartNum(cartNumTotal);
+}
+// 更新右欄購物車數字
+function cartNum(number) {
+	let cartNumberSpan = document.querySelector('.cart-number');
+	if ( number > 0 ) {
+		cartNumberSpan.style.display = 'flex';
+		cartNumberSpan.textContent = number;
+	} else {
+		cartNumberSpan.style.display = 'none';
+	}
+}
+// 刪除購物車特定項目
+function delectCartItem(id) {
+	axios
+	.delete(`${customerCarts}/${id}`)
+	.then(() => {
+	})
+	.catch((error) => {
+		console.error(error)
+	});
+}
+
+// btnDeleteCartItem.forEach(item => {
+	
+// });
+// console.log(btnDeleteCartItem);
+
+// 新增購物車列表
+// axios.get(customerCarts)
+// .then((response) => {
+// 	carts = response.data.carts;
+// 	cartTotal = response.data.finalTotal;
+// 	console.log(carts);
+// 	renderCarts(carts);
+// 	total.textContent = thousandComma(cartTotal);
+// })
+// .catch((error) => {
+// 	console.error(error)
+// })
+
+productListInit();
+cartListInit();
