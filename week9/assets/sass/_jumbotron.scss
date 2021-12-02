@@ -1,0 +1,28 @@
+.jumbotron {
+    .img {
+        background-image: url('../images/photo-1552848469-b4c949fdded7@2x.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        @media screen and (max-width: 767px) {
+            height: 320px;
+        }
+        @media screen and (min-width: 768px) {
+            height: 420px;
+        }
+    }
+    h1 {
+        position: absolute;
+        @media screen and (max-width: 767px) {
+            left: $gutter-width / 2;
+            right: $gutter-width / 2;
+            bottom: $h5*2;
+            font-weight: 500;
+            text-shadow: 0 0 5px rgba($black, 0.25);
+        }
+        @media screen and (min-width: 768px) {
+            bottom: $h5*3;
+            left: $h5*4.5;
+        }
+    }
+}
