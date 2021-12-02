@@ -1,0 +1,32 @@
+.message {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    padding: 15px 25px;
+    color: $primary-variant;
+    border: 1px solid $primary-variant;
+    border-radius: 4px;
+    background-color: rgba($white, 0.7);
+    backdrop-filter: blur(5px);
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    &::before {
+        @include beforeafter('', block);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba($primary, 0.125);
+        border-radius: 4px;
+        z-index: -1;
+    }
+    .d-inline-block {
+        vertical-align: middle;
+    }
+    .text {
+        font-size: $h4;
+        line-height: 1;
+    }
+}
