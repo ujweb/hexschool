@@ -4,6 +4,8 @@ const customerCarts = `${domain}/customer/iris/carts`;
 const customerOrders = `${domain}/customer/iris/orders`;
 const adminOrders = `${domain}/admin/iris/orders`;
 
+const uid = 'rUTMZQqsKWa2mYQamfURiNOB7Yx1';
+
 const productGroup = document.querySelector('.product-group');
 const cartTable = document.querySelector('.cart-table');
 const selectCategory = document.querySelector(".product-select");
