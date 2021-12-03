@@ -67,12 +67,3 @@ hamburger.onclick = function () {
 	hamburger.classList.toggle("active");
 	slideToggle(document.querySelector(".navbar-nav"), 500);
 };
-
-window.addEventListener("scroll", function(e) {
-    let scrollTop = window.pageYOffset|| document.documentElement.scrollTop || document.body.scrollTop;
-	if ( scrollTop > 200 ) {
-		document.querySelector('.side-fixed').style.display = 'block';
-	} else {
-		document.querySelector('.side-fixed').style.display = 'none';
-	}
-}, false);

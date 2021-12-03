@@ -1,10 +1,17 @@
+window.addEventListener("scroll", function(e) {
+	let scrollTop = window.pageYOffset|| document.documentElement.scrollTop || document.body.scrollTop;
+	if ( scrollTop > 200 ) {
+		document.querySelector('.side-fixed').style.display = 'block';
+	} else {
+		document.querySelector('.side-fixed').style.display = 'none';
+	}
+}, false);
+
 const domain = 'https://livejs-api.hexschool.io/api/livejs/v1';
 const productsList = `${domain}/customer/iris/products`;
 const customerCarts = `${domain}/customer/iris/carts`;
 const customerOrders = `${domain}/customer/iris/orders`;
 const adminOrders = `${domain}/admin/iris/orders`;
-
-const uid = 'rUTMZQqsKWa2mYQamfURiNOB7Yx1';
 
 const productGroup = document.querySelector('.product-group');
 const cartTable = document.querySelector('.cart-table');
