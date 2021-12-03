@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/images/favicon.ico">
     <title>後台管理｜WOWOROOM｜JS 工程師養成直播班（2021 秋季）最終關卡</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
     <link rel="stylesheet" href="assets/css/main.css">
@@ -28,8 +29,28 @@
         </div>
     </nav>
     <main>
+        <section class="chart py-50">
+            <div class="container">
+                <div class="swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">Slide 1</div>
+                        <div class="swiper-slide">Slide 2</div>
+                    </div>
+                    <div class="swiper-button-next">
+                        <span class="material-icons">arrow_forward_ios</span>
+                    </div>
+                    <div class="swiper-button-prev">
+                        <span class="material-icons">arrow_back_ios</span>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </section>
+        <section class="order-group py-50">
+        </section>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/admin.js"></script>
 </body>
