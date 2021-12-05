@@ -25,16 +25,6 @@ let orderUser = {};
 let cartNumTotal = 0;
 let cartTotal = 0;
 
-// 千分位
-function thousandComma(number) {
-	let num = number.toString();
-	let pattern = /(-?\d+)(\d{3})/;
-	while(pattern.test(num)) {
-		num = num.replace(pattern, "$1,$2");
-	}
-	return num;
-}
-
 // 取得產品列表
 function productListInit() {
 	axios
@@ -119,7 +109,8 @@ function renderCarts(carts) {
 				<th>金額</th>
 				<th></th>
 			</tr>
-		</thead>`;
+		</thead>
+		<tbody>`;
 		carts.forEach(item => {
 			str += `<tr>
 				<td>
@@ -137,7 +128,8 @@ function renderCarts(carts) {
 			</tr>`;
 			cartNumTotal += item.quantity;
 		});
-		str += `<tfoot>
+		str += `</tbody>
+		<tfoot>
 			<td colspan="3">
 				<button class="btn-clear-cart h4 my-0">刪除所有品項</button>
 			</td>

@@ -67,3 +67,18 @@ hamburger.onclick = function () {
 	hamburger.classList.toggle("active");
 	slideToggle(document.querySelector(".navbar-nav"), 500);
 };
+
+// 千分位
+function thousandComma(number) {
+	let num = number.toString();
+	let pattern = /(-?\d+)(\d{3})/;
+	while(pattern.test(num)) {
+		num = num.replace(pattern, "$1,$2");
+	}
+	return num;
+}
+
+// 物件轉為陣列
+function obj2ary(obj) {
+	return Object.keys(obj).map((key) => [key, obj[key]]);
+}
