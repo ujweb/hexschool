@@ -111,6 +111,10 @@ let msgState = {
 		clear: {
 			icon: 'clear',
 			text: '已為您清空訂單紀錄',
+		},
+		modify: {
+			icon: 'auto_fix_high',
+			text: '已為您修改訂單狀態',
 		}
 	},
 }

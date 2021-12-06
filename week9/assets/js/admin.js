@@ -53,6 +53,7 @@ function orderListInit() {
 function renderOrderItem(orders) {
 	// console.log(orders);
 	let str = '';
+	let isPaid = '';
 	if ( orders.length !== 0 ) {
 		str = `<thead>
 			<tr>
@@ -68,6 +69,11 @@ function renderOrderItem(orders) {
 		</thead>
 		<tbody>`;
 		orders.forEach(item => {
+			if ( item.paid ) {
+				isPaid = `<input class="btn-order-true" type="button" value="已處理">`;
+			} else {
+				isPaid = `<input class="btn-order-false" type="button" data-id="${item.id}" value="未處理">`;
+			}
 			let products = `<table>
 				<tr>
 					<th>品項</th>
@@ -96,7 +102,7 @@ function renderOrderItem(orders) {
 				</td>
 				<td>${new Date(item.createdAt * 1000).toISOString().split('T')[0]}</td>
 				<td>
-					<input class="btn-order-status" type="button" value="未處理">
+					${isPaid}
 				</td>
 				<td>
 					<input class="btn-order-delete" type="button" data-id="${item.id}" value="刪除">
@@ -110,9 +116,13 @@ function renderOrderItem(orders) {
 		});
 		str += '</tbody>';
 	} else {
+		document.querySelector('.swiper').remove();
+		document.querySelector('.btn-clear-order').remove();
 		str += `<div class="h4 color-gray-400 text-center">目前尚無訂單</div>`;
 	}
 	orderTable.innerHTML = str;
+	let btnOrderStatus = document.querySelectorAll('.btn-order-false');
+	clickModifyOrderStatus(btnOrderStatus);
 }
 // 收合詳細訂單品項
 function toggleOrderItem(array) {
@@ -135,6 +145,7 @@ function delectOrderItem(id) {
 	})
 	.then(() => {
 		orderListInit();
+		messageToggle(msgState.order.remove);
 	})
 	.catch((error) => {
 		console.error(error)
@@ -149,6 +160,41 @@ function clickDelectOrderItem(array) {
 	});
 }
 
+// 修改訂單處理狀態
+function modifyOrderStatus(id, isPaid) {
+	axios
+	.put(adminOrders,
+		{
+			data: {
+				id: id,
+				paid: isPaid
+			},
+		},
+		{
+			headers: {
+				'Authorization': uid
+			}
+		}
+	)
+	.then(response => {
+		console.log(response);
+		orderListInit();
+		messageToggle(msgState.order.modify);
+	})
+	.catch((error) => {
+		console.error(error)
+	});
+}
+// 點擊修改訂單處理狀態
+function clickModifyOrderStatus(array) {
+	array.forEach(item => {
+		item.addEventListener("click", function (e) {
+			let id = e.target.dataset.id;
+			modifyOrderStatus(id, true);
+		});
+	});
+}
+
 // 清空訂單
 function clearOrder() {
 	axios
@@ -159,6 +205,7 @@ function clearOrder() {
 	})
 	.then(() => {
 		orderListInit();
+		messageToggle(msgState.order.clear);
 	})
 	.catch((error) => {
 		console.error(error)

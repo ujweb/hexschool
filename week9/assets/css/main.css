@@ -4680,8 +4680,6 @@ a.btn {
 .order-group > table {
   width: 1110px;
   line-height: 1.25;
-  border: solid #2C2C2C;
-  border-width: 0 0 1px 1px;
 }
 .order-group > table .detail {
   background-color: #fafafa;
@@ -4697,8 +4695,7 @@ a.btn {
   text-align: left;
   vertical-align: text-top;
   letter-spacing: -0.0125em;
-  border: solid #2C2C2C;
-  border-width: 1px 1px 0 0;
+  border: 1px solid #2C2C2C;
 }
 .order-group > table th:nth-child(2), .order-group > table td:nth-child(2) {
   width: 130px;
@@ -4713,15 +4710,22 @@ a.btn {
   width: 180px;
   padding: 0.75rem 1rem;
 }
-.order-group > table .btn-order-status, .order-group > table .btn-order-toggle {
+.order-group > table .btn-order-false, .order-group > table .btn-order-toggle {
   padding: 0;
   color: #0067CE;
   text-decoration: underline;
   background: none;
   border: 0;
 }
-.order-group > table .btn-order-status:hover, .order-group > table .btn-order-toggle:hover {
+.order-group > table .btn-order-false:hover, .order-group > table .btn-order-toggle:hover {
   color: #003b76;
+}
+.order-group > table .btn-order-true {
+  padding: 0;
+  color: #B9B9B9;
+  background: none;
+  border: 0;
+  cursor: not-allowed;
 }
 .order-group > table .btn-order-delete {
   padding: 3px 12px;

@@ -92,8 +92,6 @@
     > table {
         width: 1110px;
         line-height: 1.25;
-        border: solid $gray-500;
-        border-width: 0 0 1px 1px;
         .detail {
             background-color: #fafafa;
         }
@@ -108,8 +106,7 @@
             text-align: left;
             vertical-align: text-top;
             letter-spacing: -0.0125em;
-            border: solid $gray-500;
-            border-width: 1px 1px 0 0;
+            border: 1px solid $gray-500;
             &:nth-child(2) {
                 width: 130px;
             }
@@ -124,7 +121,7 @@
                 padding: 0.75rem 1rem;
             }
         }
-        .btn-order-status, .btn-order-toggle {
+        .btn-order-false, .btn-order-toggle {
             padding: 0;
             color: #0067CE;
             text-decoration: underline;
@@ -133,6 +130,13 @@
             &:hover {
                 color: #003b76;
             }
+        }
+        .btn-order-true {
+            padding: 0;
+            color: $gray-300;
+            background: none;
+            border: 0;
+            cursor: not-allowed;
         }
         .btn-order-delete {
             padding: 3px 12px;
