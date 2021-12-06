@@ -166,6 +166,7 @@ function addCartItem(id) {
 	})
 	.then(() => {
 		cartListInit();
+		messageToggle(msgState.cart.add);
 	})
 	.catch((error) => {
 		console.error(error)
@@ -186,6 +187,7 @@ function delectCartItem(id) {
 	.delete(`${customerCarts}/${id}`)
 	.then(() => {
 		cartListInit();
+		messageToggle(msgState.cart.remove);
 	})
 	.catch((error) => {
 		console.error(error)
@@ -206,6 +208,7 @@ function clearCart() {
 	.delete(customerCarts)
 	.then(() => {
 		cartListInit();
+		messageToggle(msgState.cart.clear);
 	})
 	.catch((error) => {
 		console.error(error)
@@ -228,6 +231,8 @@ function sendOrder(orderUser) {
     })
 	.then(response => {
 		if ( response.data.status ) {
+			messageToggle(msgState.order.sent);
+			formClear();
 			cartListInit();
 		}
 	})
@@ -259,6 +264,14 @@ btnSendOrder.addEventListener('click', function(event) {
 		return;
 	}
 })
+function formClear() {
+	orderForm.classList.remove("was-validated");
+	orderForm[0].value = '';
+	orderForm[1].value = '';
+	orderForm[2].value = '';
+	orderForm[3].value = '';
+	orderForm[4].value = '';
+}
 
 productListInit();
 cartListInit();

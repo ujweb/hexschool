@@ -82,3 +82,49 @@ function thousandComma(number) {
 function obj2ary(obj) {
 	return Object.keys(obj).map((key) => [key, obj[key]]);
 }
+
+// 訊息狀態
+let msgState = {
+	cart: {
+		add: {
+			icon: 'add_shopping_cart',
+			text: '已成功加入購物車',
+		},
+		remove: {
+			icon: 'production_quantity_limits',
+			text: '已成功移除購物車',
+		},
+		clear: {
+			icon: 'remove_shopping_cart',
+			text: '已為您清空購物車',
+		}
+	},
+	order: {
+		sent: {
+			icon: 'shopping_cart_checkout',
+			text: '已為您送出訂單',
+		},
+		remove: {
+			icon: 'delete',
+			text: '已為您刪除訂單',
+		},
+		clear: {
+			icon: 'clear',
+			text: '已為您清空訂單紀錄',
+		}
+	},
+}
+
+// message 顯示，三秒後自動消失
+let message = document.querySelector('.message');
+let messageIcon = message.children[0];
+let messageText = message.children[1];
+// console.log(messageIcon, messageText);
+function messageToggle(state) {
+	messageIcon.innerHTML = state.icon;
+	messageText.innerHTML = state.text;
+	message.style.display = 'flex';
+	setTimeout(() => {
+		message.style.display = 'none';
+	}, 3000);
+}
