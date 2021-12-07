@@ -4709,7 +4709,7 @@ a.btn {
   padding: 0.5rem 0.25rem;
 }
 .order-group > table th:first-child, .order-group > table td:first-child {
-  width: 180px;
+  width: 170px;
   padding: 0.75rem 1rem;
 }
 .order-group > table .btn-order-false, .order-group > table .btn-order-toggle {
