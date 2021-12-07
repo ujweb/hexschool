@@ -1,0 +1,52 @@
+.swiper {
+    display: none;
+    width: 100%;
+    max-width: 600px;
+    .swiper-pagination {
+        position: static;
+        .swiper-pagination-bullet-active {
+            background-color: $primary;
+        }
+    }
+    .swiper-button-next, .swiper-button-prev {
+        width: 24px;
+        color: $primary;
+        &::after {
+            display: none;
+        }
+        &:hover {
+            color: $primary-variant;
+        }
+    }
+    .swiper-button-prev {
+        left: 0;
+        justify-content: start;
+    }
+    .swiper-button-next {
+        right: 0;
+        justify-content: end;
+    }
+    .swiper-slide {
+        @media screen and (max-width: 767px) {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        h2 {
+            @media screen and (min-width: 768px) {
+                margin-bottom: 80px;
+            }
+        }
+    }
+}
+
+.c3 text {
+    font-size: 0.875rem;
+}
+
+.chart-title,
+.chart-category {
+    height: 350px;
+    @media screen and (min-width: 768px) {
+        height: 450px;
+    }
+}

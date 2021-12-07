@@ -4603,6 +4603,7 @@ a.btn {
 }
 
 .swiper {
+  display: none;
   width: 100%;
   max-width: 600px;
 }
@@ -4658,6 +4659,7 @@ a.btn {
 }
 
 .btn-clear-order {
+  display: none;
   padding: 0.35em 0.9em;
   font-size: 1.25rem;
   border-radius: 4px;
@@ -4713,12 +4715,30 @@ a.btn {
 .order-group > table .btn-order-false, .order-group > table .btn-order-toggle {
   padding: 0;
   color: #0067CE;
-  text-decoration: underline;
   background: none;
   border: 0;
+  cursor: pointer;
 }
 .order-group > table .btn-order-false:hover, .order-group > table .btn-order-toggle:hover {
   color: #003b76;
+}
+.order-group > table .btn-order-false {
+  text-decoration: underline;
+}
+.order-group > table .btn-order-toggle span {
+  text-decoration: underline;
+}
+.order-group > table .btn-order-toggle span.open {
+  display: inline-block;
+}
+.order-group > table .btn-order-toggle span.close {
+  display: none;
+}
+.order-group > table .btn-order-toggle.open span.open {
+  display: none;
+}
+.order-group > table .btn-order-toggle.open span.close {
+  display: inline-block;
 }
 .order-group > table .btn-order-true {
   padding: 0;

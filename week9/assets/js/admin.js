@@ -5,12 +5,8 @@ const uid = 'rUTMZQqsKWa2mYQamfURiNOB7Yx1';
 
 const orderTable = document.querySelector('.order-table');
 let orders = [];
-let orderTitleData = {};
-let orderCatagoryData = {};
-let orderTitleDataTop3 = [];
 
 const swiper = new Swiper('.swiper', {
-	loop: true,
 	pagination: {
 		el: ".swiper-pagination",
 		clickable: true,
@@ -18,7 +14,7 @@ const swiper = new Swiper('.swiper', {
 	navigation: {
 		nextEl: ".swiper-button-next",
 		prevEl: ".swiper-button-prev",
-	},
+	}
 });
 
 // 取得訂單列表
@@ -55,6 +51,8 @@ function renderOrderItem(orders) {
 	let str = '';
 	let isPaid = '';
 	if ( orders.length !== 0 ) {
+		document.querySelector('.swiper').style.display = 'block';
+		document.querySelector('.btn-clear-order').style.display = 'inline-block';
 		str = `<thead>
 			<tr>
 				<th>訂單編號</th>
@@ -98,7 +96,7 @@ function renderOrderItem(orders) {
 				<td>${item.user.address}</td>
 				<td>${item.user.email}</td>
 				<td>
-					<input class="btn-order-toggle" type="button" value="展開詳情">
+					<div class="btn-order-toggle"><span class="open">展開詳情</span><span class="close">收合詳情</span></div>
 				</td>
 				<td>${new Date(item.createdAt * 1000).toISOString().split('T')[0]}</td>
 				<td>
@@ -116,8 +114,8 @@ function renderOrderItem(orders) {
 		});
 		str += '</tbody>';
 	} else {
-		document.querySelector('.swiper').remove();
-		document.querySelector('.btn-clear-order').remove();
+		document.querySelector('.swiper').style.display = 'none';
+		document.querySelector('.btn-clear-order').style.display = 'none';
 		str += `<div class="h4 color-gray-400 text-center">目前尚無訂單</div>`;
 	}
 	orderTable.innerHTML = str;
@@ -129,7 +127,9 @@ function toggleOrderItem(array) {
 	const orderTableTbodyTr = document.querySelectorAll('.order-table tbody tr');
 	array.forEach((item, index) => {
 		item.addEventListener("click", function (e) {
-			let nextTr = e.target.parentNode.parentNode.nextElementSibling;
+			let showButton = e.target.parentNode;
+			let nextTr = e.target.parentNode.parentNode.parentNode.nextElementSibling;
+			showButton.classList.toggle('open');
 			nextTr.classList.toggle('hidden');
 		});
 	});
@@ -220,6 +220,9 @@ function clickClearOrder(clearBtn) {
 
 // 渲染全品項營收比重圓餅圖
 function renderOrderTitle(orders) {
+	let orderTitleData = {};
+	let orderTitleDataTop3 = [];
+
 	// 取得各品項累積數量
 	orders.forEach(item => {
 		item.products.forEach(product => {
@@ -230,6 +233,7 @@ function renderOrderTitle(orders) {
 	// 取 Top3 後，再將剩餘項目數量計入「其他」
 	let orderTitleDataSort = Object.entries(orderTitleData).sort((a, b) => b[1] - a[1]);
 	let orderTitleDataOther = ['其他', 0];
+	// console.log(orderTitleDataSort);
 	orderTitleDataSort.forEach((item, index) => {
 		if ( index < 3 ) {
 			orderTitleDataTop3.push(item)
@@ -237,7 +241,9 @@ function renderOrderTitle(orders) {
 			orderTitleDataOther[1] += item[1];
 		}
 	});
-	orderTitleDataTop3.push(orderTitleDataOther);
+	if ( orderTitleDataSort.length > 3 ) {
+		orderTitleDataTop3.push(orderTitleDataOther);
+	}
 	// console.log(orderTitleDataTop3);
 
 	c3.generate({
@@ -253,6 +259,7 @@ function renderOrderTitle(orders) {
 }
 // 渲染全產品類別營收比重圓餅圖
 function renderOrderCategory(orders) {
+	let orderCatagoryData = {};
 	// 取得各產品類別累積數量
 	orders.forEach(item => {
 		item.products.forEach(product => {
