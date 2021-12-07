@@ -4042,7 +4042,7 @@ a.btn {
     left: 0;
     right: 0;
     background-color: #fff;
-    z-index: 1;
+    z-index: 2;
   }
 }
 @media screen and (min-width: 768px) {
