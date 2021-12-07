@@ -47,7 +47,7 @@ function renderProducts(products) {
 				<img src="${item.images}" width="100%" alt="${item.title}">
 			</div>
 			<div class="label h4 color-white bg-black my-0">新品</div>
-			<button class="btn-add-cart h4 my-0" data-id="${item.id}">加入購物車</button>
+			<button class="btn-add-cart h4 my-0" data-id="${item.id}"><span>加入購物車</span><span>已加入購物車</span></button>
 			<div class="h4 my-10">${item.title}</div>
 			<div class="price-origin h4 my-0">NT$${thousandComma(item.origin_price)}</div>
 			<div class="price-sale h2 my-0">NT$${thousandComma(item.price)}</div>
@@ -82,6 +82,8 @@ function cartListInit() {
 		carts = response.data.carts;
 		cartTotal = response.data.finalTotal;
 		renderCarts(carts);
+		inCart(carts);
+		cartSelectNum();
 	})
 	.then(() => {
 		let btnDeleteCartItem = document.querySelectorAll('.btn-delete-cart-item');
@@ -111,7 +113,7 @@ function renderCarts(carts) {
 			</tr>
 		</thead>
 		<tbody>`;
-		carts.forEach(item => {
+		carts.forEach((item, index) => {
 			str += `<tr>
 				<td>
 					<div class="img">
@@ -120,7 +122,15 @@ function renderCarts(carts) {
 				</td>
 				<td>${item.product.title}</td>
 				<td>NT$${thousandComma(item.product.price)}</td>
-				<td>${item.quantity}</td>
+				<td>
+					<select class="select-cart-number" name="select-cart-number-${index}" id="select-cart-number-${index}" data-number="${item.quantity}" data-id="${item.id}">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+				</td>
 				<td>NT$${thousandComma(item.product.price * item.quantity)}</td>
 				<td>
 					<span class="material-icons btn-delete-cart-item" data-id="${item.id}">close</span>
@@ -144,7 +154,51 @@ function renderCarts(carts) {
 	cartNum(cartNumTotal);
 	cartTable.innerHTML = str;
 }
-// 更新右欄購物車數字
+// 已存在購物車項目產品不能點擊
+function inCart(carts) {
+	carts.forEach(item => {
+		let productId = item.product.id;
+		let btnAddCartItem = document.querySelectorAll('.btn-add-cart');
+		btnAddCartItem.forEach(button => {
+			if ( button.dataset.id === productId ) {
+				button.classList.add('inCart');
+				button.disabled = true;
+			}
+		});
+	});
+}
+// 取得購物車各項數字（個數）
+function cartSelectNum() {
+	let cartSelectNum = document.querySelectorAll('.select-cart-number');
+	cartSelectNum.forEach(item => {
+		// 先將選取 api 內數字
+		let number = item.dataset.number;
+		item.value = number;
+		item.addEventListener("change", () => {
+			let selectNumber = Number(item.value);
+			let cartItemId = item.dataset.id;
+			updateCartSelectNum(cartItemId, selectNumber);
+		})
+	});
+}
+// 更新購物車各項數字（個數）
+function updateCartSelectNum(productId, number) {
+	axios
+	.patch(customerCarts, {
+		data: {
+			id: productId,
+			quantity: number
+		}
+	})
+	.then(() => {
+		cartListInit();
+		messageToggle(msgState.cart.modify);
+	})
+	.catch((error) => {
+		console.error(error)
+	});
+}
+// 更新右欄購物車數字（總數）
 function cartNum(number) {
 	let cartNumberSpan = document.querySelector('.cart-number');
 	if ( number > 0 ) {

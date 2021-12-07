@@ -86,6 +86,27 @@
             &:hover {
                 background-color: $primary-variant;
             }
+            span {
+                &:first-child {
+                    display: inline-block;
+                }
+                &:last-child {
+                    display: none;
+                }
+            }
+            &.inCart {
+                color: $gray-400;
+                background-color: $gray-200;
+                cursor: not-allowed;
+                span {
+                    &:first-child {
+                        display: none;
+                    }
+                    &:last-child {
+                        display: inline-block;
+                    }
+                }
+            }
         }
         .price-origin {
             text-decoration: line-through;

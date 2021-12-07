@@ -94,6 +94,10 @@ let msgState = {
 			icon: 'production_quantity_limits',
 			text: '已成功移除購物車',
 		},
+		modify: {
+			icon: 'add_shopping_cart',
+			text: '已為您修改數量',
+		},
 		clear: {
 			icon: 'remove_shopping_cart',
 			text: '已為您清空購物車',
