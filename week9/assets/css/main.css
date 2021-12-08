@@ -4042,7 +4042,7 @@ a.btn {
     left: 0;
     right: 0;
     background-color: #fff;
-    z-index: 1;
+    z-index: 2;
   }
 }
 @media screen and (min-width: 768px) {
@@ -4385,6 +4385,23 @@ a.btn {
 .product-group .product-item button:hover {
   background-color: #301E5F;
 }
+.product-group .product-item button span:first-child {
+  display: inline-block;
+}
+.product-group .product-item button span:last-child {
+  display: none;
+}
+.product-group .product-item button.inCart {
+  color: #797979;
+  background-color: #CED4DA;
+  cursor: not-allowed;
+}
+.product-group .product-item button.inCart span:first-child {
+  display: none;
+}
+.product-group .product-item button.inCart span:last-child {
+  display: inline-block;
+}
 .product-group .product-item .price-origin {
   text-decoration: line-through;
 }
@@ -4468,29 +4485,29 @@ a.btn {
 @media screen and (max-width: 767px) {
   .cart-group table th:nth-child(4), .cart-group table td:nth-child(4) {
     width: 80px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
     text-align: center;
   }
 }
 @media screen and (min-width: 768px) {
   .cart-group table th:nth-child(4), .cart-group table td:nth-child(4) {
-    padding-left: 50px;
-    padding-right: 50px;
+    padding-left: 40px;
+    padding-right: 40px;
   }
 }
 @media screen and (min-width: 850px) {
   .cart-group table th:nth-child(4), .cart-group table td:nth-child(4) {
     width: 180px;
-    padding-left: 70px;
-    padding-right: 70px;
+    padding-left: 60px;
+    padding-right: 60px;
   }
 }
 @media screen and (min-width: 1440px) {
   .cart-group table th:nth-child(4), .cart-group table td:nth-child(4) {
     width: 220px;
-    padding-left: 90px;
-    padding-right: 90px;
+    padding-left: 80px;
+    padding-right: 80px;
   }
 }
 .cart-group table th:nth-child(5), .cart-group table td:nth-child(5) {
@@ -4528,6 +4545,16 @@ a.btn {
 }
 .cart-group table th:nth-child(6) span:hover, .cart-group table td:nth-child(6) span:hover {
   color: #6A33F8;
+}
+
+.select-cart-number {
+  width: 100%;
+  max-width: 255px;
+  padding: 8px 12px;
+  color: #2C2C2C;
+  border-color: #B9B9B9;
+  background-color: #fff;
+  border-radius: 4px;
 }
 
 .btn-clear-cart {
