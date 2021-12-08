@@ -68,6 +68,7 @@ function filterCategory(category, products) {
 		});
 		renderProducts(newData);
 	}
+	inCart(carts);
 }
 // 篩選產品列表: select
 selectCategory.addEventListener("change", function () {
@@ -82,7 +83,6 @@ function cartListInit() {
 		carts = response.data.carts;
 		cartTotal = response.data.finalTotal;
 		renderCarts(carts);
-		inCart(carts);
 		cartSelectNum();
 	})
 	.then(() => {
@@ -152,13 +152,18 @@ function renderCarts(carts) {
 		str += `<div class="h4 color-gray-400 text-center">您的購物車還是空的唷</div>`;
 	}
 	cartNum(cartNumTotal);
+	inCart(carts);
 	cartTable.innerHTML = str;
 }
 // 已存在購物車項目產品不能點擊
 function inCart(carts) {
+	let btnAddCartItem = document.querySelectorAll('.btn-add-cart');
+	btnAddCartItem.forEach(button => {
+		button.classList.remove('inCart');
+		button.disabled = false;
+	});
 	carts.forEach(item => {
 		let productId = item.product.id;
-		let btnAddCartItem = document.querySelectorAll('.btn-add-cart');
 		btnAddCartItem.forEach(button => {
 			if ( button.dataset.id === productId ) {
 				button.classList.add('inCart');
@@ -167,6 +172,7 @@ function inCart(carts) {
 		});
 	});
 }
+
 // 取得購物車各項數字（個數）
 function cartSelectNum() {
 	let cartSelectNum = document.querySelectorAll('.select-cart-number');
