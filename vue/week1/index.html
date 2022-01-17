@@ -51,7 +51,7 @@
                                     <span v-if="product.is_enabled" class="text-success">啟用</span>
                                     <span v-else class="text-danger">未啟用</span>
                                 </td>
-                                <td><button type="button" class="btn btn-sm btn-primary" v-on:click="temp = product">查看細節</button></td>
+                                <td><button type="button" class="btn btn-sm btn-primary" @click="temp = product">查看細節</button></td>
                             </tr>
                         </tbody>
                         <tfoot>
