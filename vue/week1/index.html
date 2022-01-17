@@ -43,12 +43,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="product in products" :key="index">
+                            <tr v-for="(product, index) in products" :key="index">
                                 <td>{{ product.title }}</td>
                                 <td>{{ product.origin_price }}</td>
                                 <td>{{ product.price }}</td>
                                 <td>
-                                    <span v-if="product.is_enabled === 1" class="text-success">啟用</span>
+                                    <span v-if="product.is_enabled" class="text-success">啟用</span>
                                     <span v-else class="text-danger">未啟用</span>
                                 </td>
                                 <td><button type="button" class="btn btn-sm btn-primary" v-on:click="temp = product">查看細節</button></td>
@@ -63,7 +63,7 @@
                     <h2 class="mb-3">單一產品細節</h2>
                     <p v-if="Object.keys(temp).length === 0" class="text-secondary">請選擇一個商品查看</p>
                     <div v-else class="card">
-                        <img v-bind:src="temp.imageUrl" class="card-img-top" v-bind:alt="temp.title">
+                        <img :src="temp.imageUrl" class="card-img-top" :alt="temp.title">
                         <div class="card-body p-4">
                             <h3 class="card-title h5 d-flex align-items-center">{{ temp.title }}<span class="badge bg-primary ms-3">{{ temp.category }}</span></h3>
                             <p class="card-text">
@@ -78,7 +78,7 @@
                         </div>
                         <div class="card-footer px-4 py-3">
                             <h6>更多圖片</h6>
-                            <img v-for="image in temp.imagesUrl" :key="index" class="me-2" v-bind:src="image" alt="">
+                            <img v-for="image in temp.imagesUrl" :key="index" class="me-2" :src="image" alt="">
                         </div>
                     </div>
                 </div>
