@@ -25,7 +25,8 @@ const app = createApp({
                     this.getProduct();
                 })
                 .catch((error) => {
-                    console.log(error);
+                    console.dir(error);
+                    alert(error.response.data.message)
                     window.location = 'index.html'; // 錯誤返回登入首頁
                 })
         },
@@ -38,7 +39,8 @@ const app = createApp({
                     this.loaded = true
                 })
                 .catch((error) => {
-                    console.log(error);
+                    console.dir(error);
+                    alert(error.response.data.message)
                     window.location = 'index.html'; // 錯誤返回登入首頁
                 })
         },
