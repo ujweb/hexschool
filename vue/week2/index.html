@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>登入頁——第二週</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+	<script src="https://unpkg.com/vue@next"></script>
+	<link rel="stylesheet" href="assets/css/main.min.css">
+</head>
+<body class="signin-page">
+	<!-- 畫面 -->
+	<div id="app" class="h-100">
+		<div class="container-fluid h-100">
+			<div class="row h-100">
+				<div class="col-md-6 bg-blur d-flex align-items-center justify-content-center text-light">
+					<form @submit.prevent="login">
+						<h1 class="h2 my-0">Welcome!</h1>
+						<p class="mt-0 mb-5">
+							Sign in to continue
+						</p>
+						<div class="form-floating my-2">
+							<input type="email" class="form-control text-light bg-transparent border-0 border-bottom rounded-0" id="inputMail" placeholder="name@example.com" v-model="user.username" required autofocus>
+							<label for="inputMail">Email</label>
+						</div>
+						<div class="form-floating my-2">
+							<input type="password" class="form-control text-light bg-transparent border-0 border-bottom rounded-0" id="inputPassword" placeholder="Password" v-model="user.password" required>
+							<label for="inputPassword">Password</label>
+						</div>
+						<button class="btn btn-sm btn-primary w-50 py-2 mt-4" type="submit">Log In</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+	<script src="assets/js/sign-in.js" type="module"></script>
+</body>
+</html>
