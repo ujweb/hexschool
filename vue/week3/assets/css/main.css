@@ -1,0 +1,32 @@
+html, body {
+  min-width: 100%;
+  height: 100%;
+}
+
+body {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+body.signin-page {
+  background-image: url("../images/sam-chang-L6xHmv2R3G4-unsplash.jpg");
+}
+
+.bg-blur {
+  -webkit-backdrop-filter: blur(10px) brightness(0.95);
+          backdrop-filter: blur(10px) brightness(0.95);
+}
+
+form {
+  min-width: 300px;
+}
+
+form input:-webkit-autofill,
+form input:-webkit-autofill:hover,
+form input:-webkit-autofill:focus,
+form input:-webkit-autofill:active {
+  -webkit-transition: color 5000000s ease-in-out 0s, background-color 5000000s ease-in-out 0s;
+  transition: color 5000000s ease-in-out 0s, background-color 5000000s ease-in-out 0s;
+}
+/*# sourceMappingURL=main.css.map */
