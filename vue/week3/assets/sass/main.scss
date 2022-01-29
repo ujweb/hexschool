@@ -31,7 +31,9 @@ body {
 
 form {
     @include media-breakpoint-up(md) {
-        width: 300px;
+        .login-page & {
+            width: 300px;
+        }
     }
     input:-webkit-autofill,
     input:-webkit-autofill:hover,
