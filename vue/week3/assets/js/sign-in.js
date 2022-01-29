@@ -9,7 +9,8 @@ const app = createApp({
             user: {
                 username: '',
                 password: '',
-            }
+            },
+            error: '',
         }
     },
     methods: {
@@ -26,7 +27,8 @@ const app = createApp({
                     window.location = 'products.html';
                 })
                 .catch((error) => {
-                    console.log(error);
+					// console.dir(error);
+                    this.error = error.response.data.error.message;
                 });
         },
     }

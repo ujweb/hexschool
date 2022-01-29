@@ -6,7 +6,9 @@ const app = createApp({
 				url: 'https://vue3-course-api.hexschool.io/v2',
 				path: 'ujhwang'
 			},
+			page: 1,
 			products: [],
+			paginations: {},
 			loaded: false,
 			modal: {
 				title: '',
@@ -30,6 +32,7 @@ const app = createApp({
 	mounted() {
 		const token = document.cookie.replace(/(?:(?:^|.*;\s*)signinToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
 		axios.defaults.headers.common.Authorization = token;
+		this.page = parseInt(new URL(window.location.href).searchParams.get('page'));
 		this.checkSignin();
 	},
 	methods: {
@@ -47,10 +50,11 @@ const app = createApp({
 				})
 		},
 		getProduct() {
-			const adminProductsUrl = `${this.api.url}/api/${this.api.path}/admin/products`;
+			const adminProductsUrl = `${this.api.url}/api/${this.api.path}/admin/products?page=${this.page}`;
 			axios.get(adminProductsUrl)
 				.then((response) => {
-					// console.log(response.data);
+					// console.log(response);
+					this.paginations = response.data.pagination
 					this.products = response.data.products
 					this.loaded = true
 				})

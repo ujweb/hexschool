@@ -30,7 +30,9 @@ body {
 }
 
 form {
-    min-width: 300px;
+    @include media-breakpoint-up(md) {
+        width: 300px;
+    }
     input:-webkit-autofill,
     input:-webkit-autofill:hover,
     input:-webkit-autofill:focus,
