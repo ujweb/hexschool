@@ -1,4 +1,9 @@
 import { createApp } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.26/vue.esm-browser.min.js';
+
+let productModal = null;
+let successModal = null;
+let errorModal = null;
+
 const app = createApp({
 	data() {
 		return {
@@ -12,24 +17,26 @@ const app = createApp({
 			loaded: false,
 			modal: {
 				title: '',
-				content: ''
-			},
-			temp: {
-				// id: null,
-				// title: null,
-				// category: null,
-				// unit: null,
-				// origin_price: null,
-				// price: null,
-				// description: null,
-				// content: null,
-				// is_enabled: 1,
-				// imageUrl: null,
-				// imagesUrl: [],
+				content: '',
+				temp: {}
 			},
 		}
 	},
 	mounted() {
+
+		productModal = new bootstrap.Modal(document.getElementById('productModal'), {
+			keyboard: false,
+			backdrop: 'static',
+		});
+
+		successModal = new bootstrap.Modal(document.getElementById('successModal'), {
+			keyboard: false
+		});
+
+		errorModal = new bootstrap.Modal(document.getElementById('errorModal'), {
+			keyboard: false
+		});
+
 		const token = document.cookie.replace(/(?:(?:^|.*;\s*)signinToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
 		axios.defaults.headers.common.Authorization = token;
 		this.page = parseInt(new URL(window.location.href).searchParams.get('page'));
@@ -64,34 +71,86 @@ const app = createApp({
 					window.location = 'index.html'; // 錯誤返回登入首頁
 				})
 		},
-		addProduct() {
-			const adminProductUrl = `${this.api.url}/api/${this.api.path}/admin/product`;
-			const product = {
-				data: this.temp
+		updateProduct(title, product) {
+
+			const id = this.modal.temp.id;
+			const dataProduct = {
+				data: this.modal.temp
 			};
-			axios.post(adminProductUrl, product)
-				.then((response) => {
+
+			let adminProductUrl = null;
+			let method = null;
+			if ( title === '新增產品' ) {
+				adminProductUrl = `${this.api.url}/api/${this.api.path}/admin/product`;
+				method = 'post';
+			} else if ( title === '編輯產品' ) {
+				adminProductUrl = `${this.api.url}/api/${this.api.path}/admin/product/${id}`;
+				method = 'put';
+			}
+			axios[method](adminProductUrl, dataProduct)
+				.then(response => {
 					// console.log(response);
-					this.products = response.data.products
-					this.modal.title = '建立成功'
+					if ( title === '新增產品' ) {
+						this.modal.title = '新增成功'
+					} else if ( title === '編輯產品' ) {
+						this.modal.title = '修改成功'
+					}
 					this.modal.content = response.data.message;
-					this.returnModal();
+					this.clearTemp();
 					this.getProduct();
+					this.openSuccessModal();
 				})
 				.catch((error) => {
 					console.dir(error);
+					if ( title === '新增產品' ) {
+						this.modal.title = '新增失敗'
+					} else if ( title === '編輯產品' ) {
+						this.modal.title = '修改失敗'
+					}
+					this.modal.content = error.response.data.message
+					errorModal.show();
 				})
 		},
-		deleteProduct() {
+		toggleEnabled(product) {
+			const id = product.id;
+			const adminProductUrl = `${this.api.url}/api/${this.api.path}/admin/product/${id}`;
+			this.modal.temp = product;
+
+			const dataProduct = {
+				data: this.modal.temp
+			};
+
+			if ( this.modal.temp.is_enabled === 0 || this.modal.temp.is_enabled === undefined ) {
+				this.modal.temp.is_enabled = 1
+			} else if ( this.modal.temp.is_enabled === 1 ) {
+				this.modal.temp.is_enabled = 0
+			}
+			axios.put(adminProductUrl, dataProduct)
+				.then(response => {
+					// console.log(response);
+					this.modal.title = '修改成功'
+					this.modal.content = response.data.message;
+					this.getProduct();
+					this.openSuccessModal();
+				})
+				.catch((error) => {
+					console.dir(error);
+					this.modal.title = '修改失敗'
+					this.modal.content = error.response.data.message
+					errorModal.show();
+				})
+		},
+		deleteProduct(product) {
 			// 刪除功能
-			const id = this.temp.id;
+			// console.log(product.id);
+			const id = product.id;
 			const adminProductUrl = `${this.api.url}/api/${this.api.path}/admin/product/${id}`;
 			axios.delete(adminProductUrl)
 				.then((response) => {
 					// console.log(response);
 					this.modal.title = '刪除成功'
 					this.modal.content = response.data.message;
-					this.returnModal();
+					this.closeModal();
 					this.getProduct();
 				})
 				.catch((error) => {
@@ -100,65 +159,36 @@ const app = createApp({
 					this.modal.content = error.response.data.message
 				})
 		},
-		editProduct() {
-			const id = this.temp.id;
-			const adminProductUrl = `${this.api.url}/api/${this.api.path}/admin/product/${id}`;
-			const product = {
-				data: JSON.parse(JSON.stringify(this.temp))
-			};
-			axios.put(adminProductUrl, product)
-				.then(response => {
-					// console.log(response);
-					this.modal.title = '修改成功'
-					this.modal.content = response.data.message;
-					this.returnModal();
-					this.getProduct();
-				})
-				.catch((error) => {
-					console.dir(error);
-				})
+		openProductModal(title, product) {
+			// 淺拷貝：不影響原始資料（不小心按到取消也不會影響料表）
+			this.modal.temp = { ...product };
+			productModal.show();
 		},
-		toggleEnabled() {
-			const id = this.temp.id;
-			const adminProductUrl = `${this.api.url}/api/${this.api.path}/admin/product/${id}`;
-			
-			if ( this.temp.is_enabled === 0 || this.temp.is_enabled === undefined ) {
-				this.temp.is_enabled = 1
-			} else if ( this.temp.is_enabled === 1 ) {
-				this.temp.is_enabled = 0
-			}
-			const product = {
-				data: JSON.parse(JSON.stringify(this.temp))
-			};
-			axios.put(adminProductUrl, product)
-				.then(response => {
-					// console.log(response);
-					this.modal.title = '修改成功'
-					this.modal.content = response.data.message;
-					this.returnModal();
-					this.getProduct();
-				})
-				.catch((error) => {
-					console.dir(error);
-				})
+		openErrorModal(product) {
+			this.modal.temp = product;
+			errorModal.show();
+		},
+		openSuccessModal() {
+			successModal.show();
+		},
+		closeModal() {
+			productModal.hide();
+			successModal.hide();
+			errorModal.hide();
 		},
 		addImage() {
-			if ( this.temp.imagesUrl === undefined ) {
+			if ( this.modal.temp.imagesUrl === undefined ) {
 				// 沒有 imagesUrl，先給空陣列
-				this.temp.imagesUrl = [];
+				this.modal.temp.imagesUrl = [];
 			}
 			// 新增一筆空白資料，讓欄位先出來
-			this.temp.imagesUrl.push('');
+			this.modal.temp.imagesUrl.push('');
 		},
 		removeImage() {
-			this.temp.imagesUrl.pop();
+			this.modal.temp.imagesUrl.pop();
 		},
 		clearTemp() {
-			this.temp = {}
-		},
-		returnModal() {
-			const returnModal = new bootstrap.Modal(document.getElementById('returnModal'));
-			returnModal.show();
+			this.modal.temp = {}
 		},
 		logout() {
 			const logoutUrl = `${this.api.url}/logout`;

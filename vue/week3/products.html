@@ -7,7 +7,6 @@
     <title>產品頁——第三週</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <script src="https://unpkg.com/vue@next"></script>
     <link rel="stylesheet" href="assets/css/main.min.css" />
   </head>
   <body class="products-page">
@@ -37,9 +36,7 @@
               <button
                 class="btn btn-sm btn-primary"
                 type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#productModal"
-                @click="modal.title = '新增產品'"
+                @click="modal.title = '新增產品'; openProductModal(modal.title);"
               >
                 建立新的產品
               </button>
@@ -66,65 +63,62 @@
                     <td>{{ product.price.toLocaleString() }}</td>
                     <td>
                       <div class="form-check form-switch float-none d-inline-block mb-0">
-												<button
-													class="form-check-input"
-													:class="{ 'checked': product.is_enabled === 1 }"
-													@click="temp = product; toggleEnabled()"
-												></button>
+                        <button
+                          class="form-check-input"
+                          :class="{ 'checked': product.is_enabled === 1 }"
+                          @click="toggleEnabled(product);"
+                        ></button>
                       </div>
-										</td>
+                    </td>
                     <td>
                       <button
                         class="btn btn-sm btn-primary me-1"
                         type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#productModal"
-                        @click="modal.title = '編輯產品'; temp = product"
+                        @click="modal.title = '編輯產品'; openProductModal(modal.title, product);"
                       >
                         編輯
                       </button>
                       <button
                         class="btn btn-sm btn-outline-danger"
                         type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteModal"
-												@click="temp = product"
+                        @click="openErrorModal(product);"
                       >
                         刪除
                       </button>
                     </td>
                   </tr>
-									<tr v-if="loaded && products?.length === 0">
-										<td class="text-center" colspan="7">
-											目前尚無資料
-										</td>
-									</tr>
-									<tr v-show="!loaded">
-										<td class="text-center" colspan="7">
-											<div class="spinner-border text-secondary" role="status">
-												<span class="visually-hidden">Loading...</span>
-											</div>
-										</td>
-									</tr>
-								</tbody>
+                  <tr v-if="loaded && products?.length === 0">
+                    <td class="text-center" colspan="7">
+                      目前尚無資料
+                    </td>
+                  </tr>
+                  <tr v-show="!loaded">
+                    <td class="text-center" colspan="7">
+                      <div class="spinner-border text-secondary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
             <nav v-if="loaded" class="d-table mx-auto" aria-label="Page navigation">
               <ul class="pagination">
                 <li class="page-item" :class="{ 'disabled': !paginations.has_pre }">
-                  <a class="page-link" :href="`products.html?page=${page-1}`">上一頁</a>
+                  <a class="page-link" :href="`products.html?page=${paginations.current_page-1}`">上一頁</a>
                 </li>
                 <li class="page-item" v-for="item in paginations.total_pages" :key="item" :class="{ 'active': item === paginations.current_page }">
                   <a class="page-link" :href="`products.html?page=${item}`">{{ item }}</a>
                 </li>
                 <li class="page-item" :class="{ 'disabled': !paginations.has_next }">
-                  <a class="page-link" :href="`products.html?page=${page+1}`">下一頁</a>
+                  <a class="page-link" :href="`products.html?page=${paginations.current_page+1}`">下一頁</a>
                 </li>
               </ul>
             </nav>
           </div>
         </div>
       </div>
+      <!-- 商品（新增／修改）modal -->
       <div
         class="modal fade"
         id="productModal"
@@ -132,9 +126,7 @@
         aria-labelledby="productModalLabel"
         aria-hidden="true"
       >
-        <div
-          class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable"
-        >
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-body p-3">
               <h2 class="mb-2">{{ modal.title }}</h2>
@@ -149,7 +141,7 @@
                             class="form-control border-0 border-bottom border-secondary"
                             id="floatingTitle"
                             placeholder="請輸入標題"
-                            v-model="temp.title"
+                            v-model="modal.temp.title"
                           />
                           <label for="floatingTitle">請輸入標題</label>
                         </div>
@@ -159,7 +151,7 @@
                             class="form-control border-0 border-bottom border-secondary"
                             id="floatingCategory"
                             placeholder="請輸入分類"
-                            v-model="temp.category"
+                            v-model="modal.temp.category"
                           />
                           <label for="floatingCategory">請輸入分類</label>
                         </div>
@@ -169,7 +161,7 @@
                             class="form-control border-0 border-bottom border-secondary"
                             id="floatingUnit"
                             placeholder="請輸入單位"
-                            v-model="temp.unit"
+                            v-model="modal.temp.unit"
                           />
                           <label for="floatingUnit">請輸入單位</label>
                         </div>
@@ -179,7 +171,7 @@
                             class="form-control border-0 border-bottom border-secondary"
                             id="floatingOrigin"
                             placeholder="請輸入原價"
-                            v-model="temp.origin_price"
+                            v-model="modal.temp.origin_price"
                           />
                           <label for="floatingOrigin">請輸入原價</label>
                         </div>
@@ -189,7 +181,7 @@
                             class="form-control border-0 border-bottom border-secondary"
                             id="floatingSelling"
                             placeholder="請輸入售價"
-                            v-model="temp.price"
+                            v-model="modal.temp.price"
                           />
                           <label for="floatingSelling">請輸入售價</label>
                         </div>
@@ -201,14 +193,14 @@
                             class="form-control border-0 border-bottom border-secondary"
                             id="floatingMainPic"
                             placeholder="請輸入主要圖片"
-                            v-model="temp.imageUrl"
+                            v-model="modal.temp.imageUrl"
                           />
                           <label for="floatingMainPic">請輸入主要圖片</label>
                         </div>
                         <img
-                          v-if="temp.imageUrl"
+                          v-if="modal.temp.imageUrl"
                           class="img-fluid"
-                          :src="temp.imageUrl"
+                          :src="modal.temp.imageUrl"
                           alt=""
                         />
                       </div>
@@ -219,7 +211,7 @@
                             placeholder="Leave a comment here"
                             id="floatingDescription"
                             style="height: 100px"
-                            v-model="temp.description"
+                            v-model="modal.temp.description"
                           ></textarea>
                           <label for="floatingDescription"
                             >請輸入產品描述</label
@@ -231,7 +223,7 @@
                             placeholder="Leave a comment here"
                             id="floatingContent"
                             style="height: 100px"
-                            v-model="temp.content"
+                            v-model="modal.temp.content"
                           ></textarea>
                           <label for="floatingContent">請輸入說明內容</label>
                         </div>
@@ -241,7 +233,7 @@
                             type="checkbox"
                             value="is_enabled"
                             id="checkEnable"
-                            v-model.number="temp.is_enabled"
+                            v-model.number="modal.temp.is_enabled"
                             :true-value="1"
                             :false-value="0"
                           />
@@ -255,20 +247,20 @@
                   <div class="col-md-4">
                     <h3 class="mb-2">多圖新增</h3>
                     <div class="row">
-                      <div class="col-12 mb-2" v-for="(image, index) in temp.imagesUrl" :key="index">
+                      <div class="col-12 mb-2" v-for="(image, index) in modal.temp.imagesUrl" :key="index">
                         <div class="form-floating mb-2">
                           <input
                             type="text"
                             class="form-control border-0 border-bottom border-secondary"
                             :id="`floatingMainPic${index}`"
-														v-model="temp.imagesUrl[index]"
+                            v-model="modal.temp.imagesUrl[index]"
                             placeholder="請輸入圖片網址"
                           />
                           <label :for="`floatingMainPic${index}`">請輸入圖片網址</label>
                         </div>
                         <img
                           class="img-fluid"
-													v-show="image"
+                          v-show="image"
                           :src="image"
                           alt=""
                         />
@@ -277,16 +269,16 @@
                     <button
                       class="d-block w-100 btn btn-sm btn-primary mb-2"
                       type="button"
-											v-if="!temp.imagesUrl?.length || temp.imagesUrl[temp.imagesUrl.length - 1]"
-											@click="addImage"
+                      v-if="!modal.temp.imagesUrl?.length || modal.temp.imagesUrl[modal.temp.imagesUrl.length - 1]"
+                      @click="addImage"
                     >
                       新增圖片
                     </button>
                     <button
                       class="d-block w-100 btn btn-sm btn-outline-danger mb-2"
                       type="button"
-											v-else
-											@click="removeImage"
+                      v-else
+                      @click="removeImage"
                     >
                       刪除圖片
                     </button>
@@ -296,29 +288,29 @@
                   <button
                     type="button"
                     class="btn btn-outline-primary me-1"
-                    data-bs-dismiss="modal"
+                    @click="closeModal();"
                   >
                     取消
                   </button>
                   <button
-										type="button"
-										class="btn btn-primary"
-                    data-bs-dismiss="modal"
-										@click="modal.title === '編輯產品' ? editProduct() : addProduct()"
-									>
-										確認
-									</button>
+                    type="button"
+                    class="btn btn-primary"
+                    @click="updateProduct(modal.title); closeModal();"
+                  >
+                    確認
+                  </button>
                 </div>
               </form>
             </div>
           </div>
         </div>
       </div>
+      <!-- 成功訊息 modal -->
       <div
         class="modal fade"
-        id="returnModal"
+        id="successModal"
         tabindex="-1"
-        aria-labelledby="returnModalLabel"
+        aria-labelledby="successModalLabel"
         aria-hidden="true"
       >
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -332,8 +324,7 @@
                 <button
                   type="button"
                   class="btn btn-primary"
-                  data-bs-dismiss="modal"
-									@click="clearTemp"
+                  @click="clearTemp(); closeModal();"
                 >
                   我知道了
                 </button>
@@ -342,11 +333,12 @@
           </div>
         </div>
       </div>
+      <!-- 失敗訊息 modal -->
       <div
         class="modal fade"
-        id="deleteModal"
+        id="errorModal"
         tabindex="-1"
-        aria-labelledby="deleteModalLabel"
+        aria-labelledby="errorModalLabel"
         aria-hidden="true"
       >
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -354,26 +346,24 @@
             <div class="modal-body p-3">
               <h2 class="mb-2">刪除產品</h2>
               <p>
-                是否刪除<b class="text-danger">{{ temp.title }}</b>商品<br />
+                是否刪除<b class="text-danger">{{ modal.temp.title }}</b><br />
                 提醒您，刪除後將無法恢復
               </p>
               <div class="d-flex align-items-center justify-content-end mt-2">
                 <button
                   type="button"
                   class="btn btn-outline-danger me-1"
-                  data-bs-dismiss="modal"
-									@click="clearTemp"
+                  @click="closeModal();"
                 >
                   取消
                 </button>
                 <button
-									type="button"
-									class="btn btn-danger"
-                  data-bs-dismiss="modal"
-									@click="deleteProduct"
-								>
-									確認
-								</button>
+                  type="button"
+                  class="btn btn-danger"
+                  @click="deleteProduct(); closeModal();"
+                >
+                  確認
+                </button>
               </div>
             </div>
           </div>
