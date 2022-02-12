@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>登入頁——第三週</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="assets/css/main.min.css">
+</head>
+<body class="login-page">
+	<!-- 畫面 -->
+	<div id="app" class="h-100">
+		<div class="container-fluid h-100">
+			<div class="row h-100">
+				<div class="col-md-6 bg-blur d-flex align-items-center justify-content-center text-light">
+					<form @submit.prevent="login">
+						<h1 class="my-0">歡迎回來</h1>
+						<p class="mt-0 mb-5">
+							登入繼續使用
+						</p>
+						<div class="form-floating my-2">
+							<input type="email" class="form-control text-light bg-transparent border-0 border-bottom" id="inputMail" placeholder="name@example.com" v-model="user.username" required autofocus>
+							<label for="inputMail">Email</label>
+						</div>
+						<div class="form-floating my-2">
+							<input type="password" class="form-control text-light bg-transparent border-0 border-bottom" id="inputPassword" placeholder="Password" v-model="user.password" required>
+							<label for="inputPassword">Password</label>
+						</div>
+						<p class="fs-8 lh-sm my-0">{{ error }}</p>
+						<button class="btn btn-primary mt-2" type="submit">登入</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+	<script src="assets/js/sign-in.js" type="module"></script>
+</body>
+</html>

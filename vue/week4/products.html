@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>產品頁——第三週</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="assets/css/main.min.css" />
+  </head>
+  <body class="products-page">
+    <div id="app">
+      <div class="container-fluid h-100">
+        <div class="row h-100">
+          <div class="col-md-2 py-2 d-flex flex-column flex-shrink-0 bg-light h-100">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-black text-decoration-none">
+              <span class="fs-4">Sidebar</span>
+            </a>
+            <hr />
+            <ul class="nav nav-pills flex-column mb-auto">
+              <li>
+                <a href="products.html" class="nav-link" aria-current="page">
+                  產品列表
+                </a>
+              </li>
+            </ul>
+            <hr />
+            <div class="dropdown">
+              <a href="#" class="text-black text-decoration-none" @click.prevent="logout">登出</a>
+            </div>
+          </div>
+          <div class="col-md-10 py-2">
+            <div class="d-flex align-items-center justify-content-between">
+              <h1 class="mb-0">產品列表</h1>
+              <button
+                class="btn btn-sm btn-primary"
+                type="button"
+                @click="modal.title = '新增產品'; openProductModal(modal.title);"
+              >
+                建立新的產品
+              </button>
+            </div>
+            <div class="table-responsive py-2">
+              <table class="table text-center align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th width="8%" scope="col">#</th>
+                    <th width="8%" scope="col">分類</th>
+                    <th class="text-start" scope="col">產品名稱</th>
+                    <th width="10%" scope="col">原價</th>
+                    <th width="10%" scope="col">售價</th>
+                    <th width="10%" scope="col">是否啟用</th>
+                    <th width="20%" scope="col">編輯</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(product, index) in products" :key="product.id">
+                    <td>{{ index+1 }}</td>
+                    <td class="text-center">{{ product.category }}</td>
+                    <td class="text-start">{{ product.title }}</td>
+                    <td>{{ product.origin_price.toLocaleString() }}</td>
+                    <td>{{ product.price.toLocaleString() }}</td>
+                    <td>
+                      <div class="form-check form-switch float-none d-inline-block mb-0">
+                        <button
+                          class="form-check-input"
+                          :class="{ 'checked': product.is_enabled === 1 }"
+                          @click="toggleEnabled(product);"
+                        ></button>
+                      </div>
+                    </td>
+                    <td>
+                      <button
+                        class="btn btn-sm btn-primary me-1"
+                        type="button"
+                        @click="modal.title = '編輯產品'; openProductModal(modal.title, product);"
+                      >
+                        編輯
+                      </button>
+                      <button
+                        class="btn btn-sm btn-outline-danger"
+                        type="button"
+                        @click="openDangerModal(product);"
+                      >
+                        刪除
+                      </button>
+                    </td>
+                  </tr>
+                  <tr v-if="loaded && products?.length === 0">
+                    <td class="text-center" colspan="7">
+                      目前尚無資料
+                    </td>
+                  </tr>
+                  <tr v-show="!loaded">
+                    <td class="text-center" colspan="7">
+                      <div class="spinner-border text-secondary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pagination :paginations="paginations" @emit-pages="getProduct"></pagination>
+            <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+              <product-component :modal="modal" @emit-product="getProduct"></product-component>
+            </div>
+            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+              <success-component :modal="modal"></success-component>
+            </div>
+            <div class="modal fade" id="dangerModal" tabindex="-1" aria-labelledby="dangerModalLabel" aria-hidden="true">
+              <danger-component :modal="modal" @emit-delete="getProduct" @emit-open-success="openSuccessModal"></danger-component>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://getbootstrap.com/docs/5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+    <script src="assets/js/products.js" type="module"></script>
+  </body>
+</html>
