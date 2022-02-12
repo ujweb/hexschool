@@ -151,12 +151,14 @@ const app = createApp({
 					this.modal.title = '刪除成功'
 					this.modal.content = response.data.message;
 					this.closeModal();
+					this.openSuccessModal();
 					this.getProduct();
 				})
 				.catch((error) => {
 					console.dir(error);
 					this.modal.title = '系統錯誤'
 					this.modal.content = error.response.data.message
+					this.openErrorModal();
 				})
 		},
 		openProductModal(title, product) {
