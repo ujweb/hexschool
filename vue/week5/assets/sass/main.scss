@@ -16,7 +16,8 @@ body {
     &.login-page {
         background-image: url('../images/sam-chang-L6xHmv2R3G4-unsplash.jpg');
     }
-    &.products-page {
+    &.products-page,
+    &.cart-page {
         #app {
             @include media-breakpoint-up(lg) {
                 height: 100%;
