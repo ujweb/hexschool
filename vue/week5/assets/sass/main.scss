@@ -1,0 +1,50 @@
+// Required
+@import "../../node_modules/bootstrap/scss/functions"; // 必要的方法
+@import "variables"; // 自行定義的變數路徑
+@import "../../node_modules/bootstrap/scss/mixins";
+@import "../../node_modules/bootstrap/scss/bootstrap"; // Bootstrap 完整原始碼
+
+html, body {
+    min-height: 100%;
+    height: 100%;
+}
+
+body {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    &.login-page {
+        background-image: url('../images/sam-chang-L6xHmv2R3G4-unsplash.jpg');
+    }
+    &.products-page {
+        #app {
+            @include media-breakpoint-up(lg) {
+                height: 100%;
+            }
+        }
+    }
+}
+
+.bg-blur {
+    backdrop-filter: blur(10px) brightness(0.95);
+}
+
+form {
+    @include media-breakpoint-up(md) {
+        .login-page & {
+            width: 300px;
+        }
+    }
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        transition: color 5000000s ease-in-out 0s, background-color 5000000s ease-in-out 0s;
+    }
+}
+
+.table-responsive {
+    .table {
+        min-width: 1000px;
+    }
+}
