@@ -7,6 +7,7 @@
     <title>購物車列表——第五週</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.min.css" />
     <script src="https://unpkg.com/vue@next"></script>
   </head>
@@ -14,17 +15,16 @@
     <div id="app">
       <div class="container-fluid h-100">
         <div class="row h-100">
-          <div class="col-md-9 py-2">
-            <h1 class="mb-0">產品列表</h1>
+          <div class="col-xl-9 col-lg-8 col-md-7 py-2">
             <div class="table-responsive py-2">
               <table class="table text-center align-middle">
                 <thead class="table-light">
                   <tr>
-                    <th width="10%" scope="col">#</th>
+                    <th scope="col">#</th>
                     <th width="25%" scope="col">圖片</th>
                     <th width="20%" scope="col">產品名稱</th>
                     <th width="20%" scope="col">價格</th>
-                    <th width="25%" scope="col"></th>
+                    <th width="25%" scope="col" style="min-width: 280px;"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -39,17 +39,65 @@
                     </td>
                     <td>{{ product.title }}</td>
                     <td>
-                      <span class="h4">{{ product.price }}</span><br/>
-                      <del class="text-secondary small">原價：{{ product.origin_price }}</del>
+                      <span class="h4">{{ product.price.toLocaleString() }}</span><br/>
+                      <del class="text-secondary small">原價：{{ product.origin_price.toLocaleString() }}</del>
                     </td>
-                    <td></td>
+                    <td>
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-outline-secondary"
+                        @click="openProductDetailModal(product);"
+                      >
+                        查看更多
+                      </button>
+                      <button type="button" class="btn btn-sm btn-primary ms-1" @click="modal.title = '新增購物車';">
+                        <div v-if="add.loading" class="spinner-border spinner-border-sm" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                        加入購物車
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
-          <div class="col-md-3 py-2 d-flex flex-column flex-shrink-0 bg-light h-100"></div>
+          <div class="col-xl-3 col-lg-4 col-md-5 py-2 d-flex flex-column flex-shrink-0 bg-light h-100">
+            <div class="py-2">
+              <table class="table align-middle">
+                <tbody>
+                  <tr v-for="(cart, index) in carts.carts" :key="cart.id">
+                    <td>{{ cart.product.title }}</td>
+                    <td width="20%">{{ cart.qty }} {{ cart.product.unit }}</td>
+                    <td width="15%" class="text-end">{{ toNumber(cart.total).toLocaleString() }}</td>
+                    <td width="60" class="text-center">
+                      <button type="button" class="btn btn-xs btn-outline-danger">
+                        <div v-if="remove.loading" class="spinner-border spinner-border-sm" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                        刪除
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <td colspan="4" class="text-end">
+                    總計 {{ toNumber(carts.total).toLocaleString() }}
+                  </td>
+                </tfoot>
+              </table>
+            </div>
+          </div>
         </div>
+      </div>
+      <div class="modal fade" id="productDetailModal" tabindex="-1" aria-labelledby="productDetailModalLabel" aria-hidden="true">
+        <detail-component :modal="modal" @emit-product="getProducts"></detail-component>
+      </div>
+      <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <success-component :modal="modal"></success-component>
+      </div>
+      <div class="modal fade" id="dangerModal" tabindex="-1" aria-labelledby="dangerModalLabel" aria-hidden="true">
+        <danger-component :modal="modal" @emit-delete="getProduct" @emit-open-success="openSuccessModal"></danger-component>
       </div>
     </div>
     <script src="https://getbootstrap.com/docs/5.0/dist/js/bootstrap.bundle.min.js"></script>
