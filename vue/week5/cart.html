@@ -9,13 +9,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4/dist/vue-loading.min.css">
     <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/4.5.8/vee-validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vee-validate/rules@4.5.8/dist/vee-validate-rules.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vee-validate/i18n@4.5.8/dist/vee-validate-i18n.min.js"></script>
   </head>
   <body class="cart-page">
     <div id="app">
-      <div class="container-fluid h-100">
-        <div class="row h-100">
-          <div class="col-xl-9 col-lg-8 col-md-7 py-2">
+      <loading v-model:active="dataloading" :can-cancel="false"></loading>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-xxl-9 col-xl-8 col-lg-7 col-md-7 py-2">
             <div class="table-responsive py-2">
               <table class="table text-center align-middle">
                 <thead class="table-light">
@@ -50,8 +56,8 @@
                       >
                         查看更多
                       </button>
-                      <button type="button" class="btn btn-sm btn-primary ms-1" @click="modal.title = '新增購物車';">
-                        <div v-if="add.loading" class="spinner-border spinner-border-sm" role="status">
+                      <button type="button" class="btn btn-sm btn-primary ms-1" @click="updateCart('新增購物車', product.id)">
+                        <div v-if="loading === product.id" class="spinner-border spinner-border-sm" role="status">
                           <span class="visually-hidden">Loading...</span>
                         </div>
                         加入購物車
@@ -62,42 +68,154 @@
               </table>
             </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-5 py-2 d-flex flex-column flex-shrink-0 bg-light h-100">
-            <div class="py-2">
-              <table class="table align-middle">
-                <tbody>
-                  <tr v-for="(cart, index) in carts.carts" :key="cart.id">
-                    <td>{{ cart.product.title }}</td>
-                    <td width="20%">{{ cart.qty }} {{ cart.product.unit }}</td>
-                    <td width="15%" class="text-end">{{ toNumber(cart.total).toLocaleString() }}</td>
-                    <td width="60" class="text-center">
-                      <button type="button" class="btn btn-xs btn-outline-danger">
-                        <div v-if="remove.loading" class="spinner-border spinner-border-sm" role="status">
-                          <span class="visually-hidden">Loading...</span>
+          <aside class="col-xxl-3 col-xl-4 col-lg-5 col-md-5 py-2 d-flex flex-column flex-shrink-0 bg-light">
+            <div class="aside py-2">
+              <div>
+                <table class="table align-middle" v-if="carts.total !== 0">
+                  <tbody>
+                    <tr v-for="(cart, index) in carts.carts" :key="cart.id">
+                      <td>{{ cart.product.title }}</td>
+                      <td width="25%">
+                        <div class="input-group input-group-sm">
+                          <select class="form-select ps-1" v-model.number="cart.qty" @change="updateCart('編輯購物車', cart.id, cart.qty)">
+                            <option
+                              v-for="number in 30"
+                              :value="number"
+                              :selected="cart.qty === number"
+                              :key="cart.id + number"
+                            >
+                              {{ number }}
+                            </option>
+                          </select>
+                          <span class="input-group-text bg-transparent border-0 p-1">{{ cart.product.unit }}</span>
                         </div>
-                        刪除
-                      </button>
+                      </td>
+                      <td width="15%" class="text-end">{{ toNumber(cart.total).toLocaleString() }}</td>
+                      <td width="100" class="text-center">
+                        <button type="button" class="btn btn-xs btn-outline-danger" @click="openDeleteModal(cart, '刪除購物車');">
+                          <div v-if="loading === cart.id && modal.title === '刪除購物車'" class="spinner-border spinner-border-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                            刪除
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <td colspan="4">
+                      <div class="row align-items-center">
+                        <div class="col-md-6 text-start">
+                          <button type="button" class="btn btn-sm btn-danger" @click="openDeleteModal({}, '清空購物車');">清空購物車</button>
+                        </div>
+                        <div class="col-md-6 text-end">
+                          總計 {{ toNumber(carts.total).toLocaleString() }}
+                        </div>
+                      </div>
                     </td>
-                  </tr>
-                </tbody>
-                <tfoot>
-                  <td colspan="4" class="text-end">
-                    總計 {{ toNumber(carts.total).toLocaleString() }}
-                  </td>
-                </tfoot>
-              </table>
+                  </tfoot>
+                </table>
+                <div class="text-secondary text-center" v-else>
+                  目前沒有加入任何商品
+                </div>
+              </div>
+              <div class="pt-2" v-if="carts.total !== 0">
+                <h3 class="mb-3">收件資料</h3>
+                <v-form ref="form" v-slot="{ errors }" @submit="onSubmit">
+                  <div class="form-floating mb-2">
+                    <v-field
+                      id="orderEmail"
+                      name="email"
+                      type="email"
+                      class="form-control"
+                      :class="{ 'is-invalid': errors['email'] }"
+                      placeholder="請輸入 Email"
+                      rules="email|required"
+                      v-model="order.data.user.email"
+                    ></v-field>
+                    <label for="orderEmail">請輸入 Email*</label>
+                    <error-message name="email" class="invalid-feedback"></error-message>
+                  </div>
+                  <div class="form-floating mb-2">
+                    <v-field
+                      id="orderName"
+                      name="姓名"
+                      type="text"
+                      class="form-control"
+                      :class="{ 'is-invalid': errors['姓名'] }"
+                      placeholder="請輸入收件人姓名"
+                      rules="required"
+                      v-model="order.data.user.name"
+                    ></v-field>
+                    <label for="orderName">請輸入收件人姓名*</label>
+                    <error-message name="姓名" class="invalid-feedback"></error-message>
+                  </div>
+                  <div class="form-floating mb-2">
+                    <v-field
+                      id="orderTel"
+                      name="電話"
+                      type="tel"
+                      class="form-control"
+                      :class="{ 'is-invalid': errors['電話'] }"
+                      placeholder="請輸入收件人電話"
+                      :rules="isPhone"
+                      v-model="order.data.user.tel"
+                    ></v-field>
+                    <label for="orderTel">請輸入收件人電話*</label>
+                    <span class="invalid-feedback d-block text-secondary">範例：0912345678</span>
+                    <error-message name="電話" class="invalid-feedback"></error-message>
+                  </div>
+                  <div class="form-floating mb-2">
+                    <v-field
+                      id="orderAddr"
+                      name="地址"
+                      type="text"
+                      class="form-control"
+                      :class="{ 'is-invalid': errors['地址'] }"
+                      placeholder="請輸入收件人地址"
+                      rules="required"
+                      v-model="order.data.user.address"
+                    ></v-field>
+                    <label for="orderAddr">收件人地址*</label>
+                    <error-message name="地址" class="invalid-feedback"></error-message>
+                  </div>
+                  <div class="form-floating mb-2">
+                    <textarea
+                      class="form-control"
+                      id="orderComment"
+                      placeholder="留言"
+                      style="height: 100px;"
+                      v-model="order.data.message"
+                    ></textarea>
+                    <label for="orderComment">留言</label>
+                  </div>
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    :class="{ 'btn-secondary': Object.keys(order.data.user).length === 0 || Object.keys(errors).length > 0 }"
+                    :disabled="Object.keys(order.data.user).length === 0 || Object.keys(errors).length > 0"
+                  >
+                    <div v-if="loading === 'submit'" class="spinner-border spinner-border-sm" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                    確定送出
+                  </button>
+                </v-form>
+              </div>
             </div>
-          </div>
+          </aside>
         </div>
       </div>
       <div class="modal fade" id="productDetailModal" tabindex="-1" aria-labelledby="productDetailModalLabel" aria-hidden="true">
-        <detail-component :modal="modal" @emit-product="getProducts"></detail-component>
+        <detail-component :modal="modal" :loading="loading" @emit-cart="updateCart('新增購物車', modal.temp.id, modal.qty)"></detail-component>
       </div>
       <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
         <success-component :modal="modal"></success-component>
       </div>
       <div class="modal fade" id="dangerModal" tabindex="-1" aria-labelledby="dangerModalLabel" aria-hidden="true">
-        <danger-component :modal="modal" @emit-delete="getProduct" @emit-open-success="openSuccessModal"></danger-component>
+        <danger-component :modal="modal"></danger-component>
+      </div>
+      <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <delete-component :modal="modal" :loading="loading" @emit-delete="removeCart(cart.id)"></delete-component>
       </div>
     </div>
     <script src="https://getbootstrap.com/docs/5.0/dist/js/bootstrap.bundle.min.js"></script>

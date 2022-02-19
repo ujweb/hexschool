@@ -5,9 +5,7 @@ export const successComponent = {
 		<div class="modal-content">
 			<div class="modal-body p-3">
 				<h2 class="mb-2">{{modal.title}}</h2>
-				<p>
-					{{modal.content}}
-				</p>
+				<p v-html="modal.content"></p>
 				<div class="d-flex align-items-center justify-content-end mt-2">
 					<button
 						type="button"

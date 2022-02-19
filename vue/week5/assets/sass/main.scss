@@ -24,10 +24,22 @@ body {
             }
         }
     }
+    &.cart-page {
+        .aside {
+            position: sticky;
+            top: 0;
+            bottom: 0;
+            right: 0;
+        }
+    }
 }
 
 .bg-blur {
     backdrop-filter: blur(10px) brightness(0.95);
+}
+
+.text-pre-line {
+    white-space: pre-line;
 }
 
 form {
